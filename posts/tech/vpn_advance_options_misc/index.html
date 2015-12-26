@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<base href="http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VPN 高级选项那些事 | v2h</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/tipuesearch.css">
+</head>
+<body>
+<div id="tipue_search_content" style="display: none; margin-left: auto; margin-right: auto; padding: 20px;"></div>
+
+
+
+    
+
+    <meta name="author" content="lennyh">
+<link rel="prev" href="../js_bit_operation/" title="JavaScript的移位运算与IP地址处理" type="text/html">
+<link rel="next" href="../ldap_summury/" title="小结LDAP" type="text/html">
+<meta property="og:site_name" content="v2h">
+<meta property="og:title" content="VPN 高级选项那些事">
+<meta property="og:url" content="http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/">
+<meta property="og:description" content="一、VPN高级选项
+
+VPN高级选项有哪些，都是什么意思
+
+
+DNS 搜索域
+These are for the mechanism for going from a machine name to a Fully Qualified Domain Name.
+DNS searches can only look at a Fully Qualified Domain Name, such as ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-12-24T15:08:26+08:00">
+<meta property="article:tag" content="tech">
+<meta property="article:tag" content="vpn">
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://lennyhbt.github.io/">
+
+                <span id="blog-title">v2h</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../archive.html">文章存档</a>
+                </li>
+<li>
+<a href="../../../categories/">标签</a>
+                </li>
+<li>
+<a href="../../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<span class="navbar-form pull-left">
+<input type="text" id="tipue_search_input"></span>
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.rst" id="sourcelink">源代码</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">VPN 高级选项那些事</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                    lennyh
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2014-12-24T15:08:26+08:00" itemprop="datePublished" title="2014-12-24 15:08">2014-12-24 15:08</time></a></p>
+                <p class="commentline">
+        
+    <a href=".#disqus_thread" data-disqus-identifier="cache/posts/tech/VPN_Advance_Options.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="index.rst" id="sourcelink">源代码</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="vpn">
+<h2>一、VPN高级选项</h2>
+<div class="section" id="id1">
+<h3>VPN高级选项有哪些，都是什么意思</h3>
+<ul>
+<li><dl class="first docutils">
+<dt>DNS 搜索域</dt>
+<dd>
+<p class="first">These are for the mechanism for going from a machine name to a Fully Qualified Domain Name.</p>
+<p>DNS searches can only look at a Fully Qualified Domain Name, such as mymachine.example.com. But, it's a pain to type out mymachine.example.com, you want to be able to just type mymachine.</p>
+<p>Using Search Domains is the mechanism to do this. If you type a name that does not end with a period, it knows it needs to add the search domains for the lookup. So, lets say your Search Domains list was: example.org, example.com</p>
+<p>mymachine</p>
+<p>would try first mymachine.example.org, not find it, then try mymachine.example.com, found it, now done.</p>
+<p>mymachine.example.com</p>
+<p>would try mymachine.example.com.example.org (remember, it doesn't end with a period, still adds domains), fail, then mymachine.example.com.example.com, not find it, fall back to mymachine.example.com, found it, now done</p>
+<p>mymachine.example.com. Ends with a period, no searching, just do mymachine.example.com</p>
+<p>Soooo.....</p>
+<p>If you have your own DNS domain such as example.com, put it there. If not, ignore it. It really is more corporate than a home setting.</p>
+<p class="last">参考 <a class="reference external" href="http://superuser.com/questions/184361/what-is-the-search-domains-field-for-in-the-tcp-ip-dns-settings-control-panel">What is the “Search Domains” field for in the tcp/ip DNS settings control panel/preference pane for?&gt;</a></p>
+</dd>
+</dl></li>
+<li><dl class="first docutils">
+<dt>DNS 服务器</dt>
+<dd>
+<p class="first">域名系统（英文：Domain Name System，縮寫：DNS）是因特网的一项服务。它作为将域名和IP地址相互映射的一个分布式数据库，能够使人更方便的访问互联网。DNS 使用TCP和UDP端口53。当前，对于每一级域名长度的限制是63个字符，域名总长度则不能超过253个字符。</p>
+<p class="last">参考 <a class="reference external" href="http://zh.wikipedia.org/zh/%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F">域名系统</a></p>
+</dd>
+</dl></li>
+<li><dl class="first docutils">
+<dt>转发路线</dt>
+<dd>
+<p class="first last">即转发路由，因DNS服务器不提供任何服务，因此所有的请求都需要经过转发才能到达可以响应请求的服务器，转发路线即配置发往哪些地址请求的需经过VPN转发。</p>
+</dd>
+</dl></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>为什么需要这些选项</h3>
+<p>这些选项其实只是一些基础的网络参数，因此所有的网络连接（包括VPN）都需要这些选项。但是并不是所有的网络连接都需要手动配置这些参数。那么为什么VPN更加的需要配置这些参数呢？</p>
+<p>VPN是一种常用于连接中、大型企业或团体与团体间的私人网络的通讯方法。虚拟私人网络的讯息透过公用的网络架构（例如：互联网）来传送内联网的网络讯息。这种技术可以用不安全的网络（例如：互联网）來傳送可靠、安全的訊息。[摘自 <a class="reference external" href="http://zh.wikipedia.org/zh/%E8%99%9B%E6%93%AC%E7%A7%81%E4%BA%BA%E7%B6%B2%E8%B7%AF&gt;">危机百科</a> ]</p>
+<p>DNS请求呢？在未配置VPN之前，我们使用的是不安全网络上的DNS服务器，如果连接到VPN之后我们仍然连接不安全网络上的DNS服务器，如何保证我们的数据安全？
+DNS搜索域是一个方便使用的选项。</p>
+<p>路由则指定了哪些数据是需要VPN网络来保护的，如果不指定，或者系统中所有的流量都经过VPN，但是VPN连接到的私有网络并不能提供不安全网络中所有的网络请求；或者
+系统中所有的流量都不经过VPN服务器，连接VPN干嘛，当摆设吗？</p>
+<p>由此可见，这些网络高级选项在VPN的配置中还是很有必要的。</p>
+</div>
+</div>
+<div class="section" id="connman">
+<h2>二、关于connman</h2>
+<p>使用connman管理系统网络连接的例子并不多，网络上相关的资料也很少。
+万幸的是，connman自带的文档(doc目录)大概可以把connman的设计原则和使用方法解释清除了。
+以下内容及为参考该文档及源代码以及本人的推测得来的，不一定准确。</p>
+<div class="section" id="id4">
+<h3>connman是如何管理所有连接的</h3>
+<pre class="literal-block">
+src/provider.c  -- 管理connman中每一个（不是每一种）连接，保存连接。
+src/service.c   -- 管理连接服务。
+src/task.c  -- connman中对连接的代码，负责创建与维护真正的连接进程。
+</pre>
+<p>这几个代码文件大概实现了connman连接管理的框架，但是新建连接后还需要设置很多的网络参数，
+等等，正是这一部分使得connman显得更加的复杂。</p>
+</div>
+<div class="section" id="connman-dns">
+<h3>connman是如何管理网络参数的（路由、DNS等）</h3>
+<p>connman中对网络参数的管理是基于连接的，即每个连接都有不同的网络参数配置，该连接生效时connman会根据
+连接属性更新系统的网络参数。</p>
+<p>connman封装了很多对系统网络参数修改的API，如下列举部分:</p>
+<pre class="literal-block">
+src/inet.c  -- 实现对系统路由的配置
+src/ipconfig.c  -- 实现对系统地址的配置
+src/resolver.c  -- 实现对系统DNS的配置，connman有选项支持dns代理
+</pre>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">connman-vpn与上述描述并不完全一致。
+当然，vpn连接也是由connman_task创建具体的任务来连接的，但是。
+vpn/vpn-manager.c提供新建/删除VPN连接的功能(create/remove/get_connections...)。
+vpn/vpn-provider.c提供了vpn连接/断开功能(do_connect/do_disconnect...)。
+vpn连接建立/删除时会发送ConnectionAdded/ConnectionRemoved信号，
+vpn连接时会发送PropertyChanged信号。
+connman的vpn插件会监听这些信号，在新建/删除vpn连接时会在connman进程中建立该连接的provider及service。
+connman监听到PropertyChanged信号时会根据属性设置系统当前的网络参数（dns等）。</p>
+</div>
+<p>推荐文档阅读顺序：
+vpn-overview.txt -&gt; vpn-manager-api.txt -&gt; vpn-connection-api.txt</p>
+</div>
+</div>
+<div class="section" id="qt-qml-and-d-bus">
+<h2>四、Qt 、QML and D-Bus</h2>
+<p>Connman是以daemon进程在系统后台运行的，要访问Connman提供的服务，只能通过进程间通信类似的机制。
+事实上Connman提供的服务都是以D-Bus方法即信号作为API接口的。</p>
+<p>例如，新建/删除VPN、连接VPN的接口如下：</p>
+<pre class="code c"><a name="rest_code_d322a547703340fb829e0dd0a184ca7a-1"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">create</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_d322a547703340fb829e0dd0a184ca7a-2"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">remove</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_d322a547703340fb829e0dd0a184ca7a-3"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">do_connect</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+</pre>
+<div class="section" id="qtd-bus">
+<h3>Qt对D-Bus的支持</h3>
+<p>Qt对D-Bus的支持算是基本完善，该有的都可以有，不该有的可能会可以有。（：D）</p>
+<p>可以通过Qt中D-Bus相关的库函数创建D-Bus服务，或者使用别人提供的服务。对发送接收数据类型的支持也比较完整，不仅能够
+收发基本的整数、字符串等，复杂的字典、数组等自然也不在话下。</p>
+<p>但是Qt对DBUS_TYPE_STRUCT的支持需要稍多做一些工作，下面的章节会有介绍。</p>
+</div>
+<div class="section" id="qmld-bus">
+<h3>QML对D-Bus的支持</h3>
+<p>很遗憾，QML原生并不支持D-Bus，但是可以通过两种变通的途径使用。
+第一是，在C++代码中封装调用D-Bus的接口，并注册到QML中。
+第二种，是采用非QT官方的插件，实现，例如： <a class="reference external" href="https://github.com/nemomobile/nemo-qml-plugin-dbus">Nemo Mobile D-Bus QML Plugin</a></p>
+<p>好吧，其实是一种，第二种其实同样是C++代码中封装了调用D-Bus的接口，但是除此之外，还有什么办法可以扩展QML不支持的功能吗？</p>
+</div>
+<div class="section" id="qtd-busdbus-type-struct">
+<h3>Qt对D-Bus中DBUS_TYPE_STRUCT的支持</h3>
+<p>Qt有自己的类型系统，不知是该庆幸还是该懊恼。
+Qt的类型系统极大的丰富了我们的精神文化生活，噢不，是极大的方便了我们的开发，QVariant，信号/槽（QObject）等等。
+但是这样一来我们自己定义的类型却无法使用这些方便的特性，而且Qt D-Bus也不支持自定义类型的发送与接收。</p>
+<p>幸运的是，上帝在关上这扇门的时候悄悄给我们开了一扇窗，我们可以将自己定义的类型注册到Qt的元类型系统中去，
+这样我们自己定义的类型也可以使用Qt提供的很多方便的特性了，最重要的是我们自定义的结构也可以通过Qt的D-Bus接口发送与接收了。</p>
+<p>创建方法在此不表，无非是在适当的地方增加几次调用:</p>
+<pre class="literal-block">
+Q_DECLARE_METATYPE(Type)；
+int qRegisterMetaType(const char * typeName)；
+int qDBusRegisterMetaType()；
+</pre>
+<p>详情参看如下链接：</p>
+<ul class="simple">
+<li><a class="reference external" href="http://qtdocs.sourceforge.net/index.php/%E5%88%9B%E5%BB%BA%E8%87%AA%E5%AE%9A%E4%B9%89Qt%E7%B1%BB%E5%9E%8B">创建自定义Qt类型</a></li>
+<li><a class="reference external" href="http://www.qtcentre.org/threads/26871-Problems-with-marshalling-a-struct-to-Qt-DBus">Problems with marshalling a struct to Qt/DBus</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="linux">
+<h2>五、Linux 连接管理</h2>
+<div class="section" id="id5">
+<h3>都有哪些连接管理实现</h3>
+<ul>
+<li>
+<p class="first">Android：<a class="reference external" href="http://developer.android.com/reference/android/net/ConnectivityManager.html">ConnectivityManager</a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://wiki.gnome.org/Projects/NetworkManager">NetworkManager</a></dt>
+<dd>
+<p class="first last">NetworkManager is a set of co-operative tools that make networking simple and straightforward. Whether Wi-Fi, wired, bond, bridge, 3G, or Bluetooth, NetworkManager allows you to quickly move from one network to another: once a network has been configured and joined, it can be detected and re-joined automatically the next time its available.</p>
+</dd>
+</dl></li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://01.org/zh/connman?langredirect=1">ConnMan</a></dt>
+<dd>
+<p class="first last">ConnMan is a daemon for managing Internet connections within embedded device and integrates a vast range of communication features usually split between many daemons such as DHCP, DNS and NTP. The result of this consolidation is low memory consumption with a fast, coherent, synchronized reaction to changing network conditions.</p>
+</dd>
+</dl></li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>为什么需要连接管理</h3>
+<p>几乎所有的现代操作系统都有统一的连接管理，这是为什么呢？
+其实这个问题我也不知道。所以，下面的内容纯属揣测，如有不对恳请指正。</p>
+<p>大概是有两个原因吧，我想。
+一是便于用户的配置，试想，用户连接上一个新的网络（有线、无线、VPN等）后，要手动的去修改DNS、路由、地址等信息，
+肯定是不可原谅的，或者进一步，需要在不同的位置分别通过不用的程序去配置不同的网络参数，少改了一项网络可就不正常了哦。</p>
+<p>二是便于网络的管理，如果每种连接自己管自己的网络配置，可是这些配置的生效可是在一个系统上的，于是每个程序都去修改
+DNS配置，路由，地址等信息，你确保不会改乱？</p>
+<p>其实反观其他子系统，声音肯定要在所有要播放/录制声音的程序后面有一个daemon来负责系统的混音及播放工作，不可能每个程序各播各的，你肯定不原因听到那种声音的。
+显示子系统不可能是每个想要在屏幕上显示东西的程序自己向屏幕上写吧，这样我显示了一个窗口，你显示了一个通知，我有显示了一个文档，你确定用户能够看得请？所以还是需要有显示管理器在后面跑的。</p>
+<p>同理，系统的网络配置大家一起改，你确定不会改乱？
+这大概是一个趋势吧，只有一种或者两种网络连接的时候，我可以随便改，要是系统有很多种连接类型，可就不能胡来了。</p>
+</div>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../../categories/tech/" rel="tag">tech</a></li>
+            <li><a class="tag p-category" href="../../../categories/vpn/" rel="tag">vpn</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../js_bit_operation/" rel="prev" title="JavaScript的移位运算与IP地址处理">前一篇</a>
+            </li>
+            <li class="next">
+                <a href="../ldap_summury/" rel="next" title="小结LDAP">后一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="nikolademo",
+            disqus_url="http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/",
+        disqus_title="VPN \u9ad8\u7ea7\u9009\u9879\u90a3\u4e9b\u4e8b",
+        disqus_identifier="cache/posts/tech/VPN_Advance_Options.html",
+        disqus_config = function () {
+            this.language = "zh_cn";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="nikolademo";(function(){var a=document.createElement("script");a.async=true;a.src="//"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2015         <a href="mailto:hhhhhf@foxmail.com">lennyh</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+<br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../../assets/js/all-nocdn.js"></script><script src="../../../assets/js/colorbox-i18n/jquery.colorbox-zh-CN.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-cn");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script src="../../../assets/js/tipuesearch_set.js"></script><script src="../../../assets/js/tipuesearch.js"></script><script>
+$(document).ready(function() {
+    $('#tipue_search_input').tipuesearch({
+        'mode': 'json',
+        'contentLocation': '/assets/js/tipuesearch_content.json',
+        'showUrl': false
+    });
+});
+</script>
+</body>
+</html>

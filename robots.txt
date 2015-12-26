@@ -1,0 +1,4 @@
+Sitemap: http://lennyhbt.github.io/sitemapindex.xml
+
+User-Agent: *
+Host: lennyhbt.github.io

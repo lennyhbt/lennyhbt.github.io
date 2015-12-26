@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<base href="http://lennyhbt.github.io/posts/tech/js_bit_operation/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JavaScript的移位运算与IP地址处理 | v2h</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta content="#5670d4" name="theme-color">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="http://lennyhbt.github.io/posts/tech/js_bit_operation/">
+<!--[if lt IE 9]><script src="../../../assets/js/html5.js"></script><![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/tipuesearch.css">
+</head>
+<body>
+<div id="tipue_search_content" style="display: none; margin-left: auto; margin-right: auto; padding: 20px;"></div>
+
+
+
+    
+
+    <meta name="author" content="lennyh">
+<link rel="prev" href="../../helloworld/" title="Hello Pelican &amp; GitHub Pages" type="text/html">
+<link rel="next" href="../vpn_advance_options_misc/" title="VPN 高级选项那些事" type="text/html">
+<meta property="og:site_name" content="v2h">
+<meta property="og:title" content="JavaScript的移位运算与IP地址处理">
+<meta property="og:url" content="http://lennyhbt.github.io/posts/tech/js_bit_operation/">
+<meta property="og:description" content="JS左移运算符号位的问题
+最近在做项目时有一个需求，将用户输入的 地址/掩码 对解析出来，并将数字掩码转换成点分的格式。
+想到在C代码里面应该还算容易实现，通过最大32位整数位移就可完成，但是在 JavaScript 中如何实现还是很不清楚的。
+因为考虑到JavaScript是弱类型的语言，首先就会遇到数字和字符串的转换等问题，接着还有按位操作的问题也不知道在JavaScript中如何实现。
+然后">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-12-17T19:24:26+08:00">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="tech">
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://lennyhbt.github.io/">
+
+                <span id="blog-title">v2h</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../../archive.html">文章存档</a>
+                </li>
+<li>
+<a href="../../../categories/">标签</a>
+                </li>
+<li>
+<a href="../../../rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<span class="navbar-form pull-left">
+<input type="text" id="tipue_search_input"></span>
+
+            <ul class="nav navbar-nav navbar-right">
+<li>
+    <a href="index.rst" id="sourcelink">源代码</a>
+    </li>
+
+                
+            </ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">JavaScript的移位运算与IP地址处理</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn">
+                    lennyh
+            </span></p>
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2014-12-17T19:24:26+08:00" itemprop="datePublished" title="2014-12-17 19:24">2014-12-17 19:24</time></a></p>
+                <p class="commentline">
+        
+    <a href=".#disqus_thread" data-disqus-identifier="cache/posts/tech/js-bit-operation-with-ip-process.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="index.rst" id="sourcelink">源代码</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="js">
+<h2>JS左移运算符号位的问题</h2>
+<p>最近在做项目时有一个需求，将用户输入的 <em>地址/掩码</em> 对解析出来，并将数字掩码转换成点分的格式。</p>
+<p>想到在C代码里面应该还算容易实现，通过最大32位整数位移就可完成，但是在 JavaScript 中如何实现还是很不清楚的。</p>
+<p>因为考虑到JavaScript是弱类型的语言，首先就会遇到数字和字符串的转换等问题，接着还有按位操作的问题也不知道在JavaScript中如何实现。
+然后开始查询资料尝试解决这些问题。数字和字符串类型的转换是不需要的，写代码尝试了下应该JavaScript自动做了类型转换。</p>
+<p>首先想到的思路是根据最大32位整数位移获取掩码对应的整数值，然后将结果转换成点分格式的字符串。在网上找到了如下的代码。</p>
+<pre class="code javascript"><a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-1"></a><span class="kd">function</span> <span class="nx">ip2long</span><span class="p">(</span><span class="nx">ip</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-2"></a>    <span class="kd">var</span> <span class="nx">ipl</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-3"></a>    <span class="nx">ip</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">octet</span> <span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-4"></a>        <span class="nx">ipl</span><span class="o">&lt;&lt;=</span><span class="mi">8</span><span class="p">;</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-5"></a>        <span class="nx">ipl</span><span class="o">+=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">octet</span><span class="p">);</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-6"></a>    <span class="p">});</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-7"></a>    <span class="k">return</span><span class="p">(</span><span class="nx">ipl</span> <span class="o">&gt;&gt;&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-8"></a><span class="p">}</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-9"></a>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-10"></a><span class="kd">function</span> <span class="nx">long2ip</span> <span class="p">(</span><span class="nx">ipl</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-11"></a>    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;&gt;</span><span class="mi">24</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-12"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">16</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-13"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">8</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-14"></a>        <span class="p">(</span><span class="nx">ipl</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
+<a name="rest_code_2dfbf0ebee4a4fa5a402c6519e71f1f4-15"></a><span class="p">}</span>
+</pre>
+<p>有了这两个方法就可以将计算得到的掩码整数值转换成点分格式了。
+但是在做位运算的时候发现了一个坑，在一边查资料一边尝试实现的第一个版本中，掩码为0和掩码为32产生的结果一样，都是255.255.255.255。</p>
+<!-- note
+JavaScript的左移运算保留数字的符号位。例如，如果把 -2 左移 5 位，得到的是 -64，而不是 64。符号仍然存储在第32位中。 即使输出二进制字符串形式的负数，显示的也是负号形式（例如，-2 将显示 -10。） -->
+<p>看来此方案不可行，接着查资料发现了一个新的思路，根据掩码生成四个小于等于255的值，将这四个值拼成点分格式。这样实现避免了对符号位的操作，甚好。</p>
+<pre class="code javascript"><a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-1"></a><span class="kd">function</span> <span class="nx">createNetmaskAddr</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-2"></a>  <span class="kd">var</span> <span class="nx">mask</span><span class="o">=</span><span class="p">[];</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-3"></a>  <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-4"></a>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-5"></a>    <span class="nx">mask</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">256</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="nx">n</span><span class="p">));</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-6"></a>    <span class="nx">bitCount</span> <span class="o">-=</span> <span class="nx">n</span><span class="p">;</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-7"></a>  <span class="p">}</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-8"></a>  <span class="k">return</span> <span class="nx">mask</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
+<a name="rest_code_5370f3b9369d40d685c0208cb6ef02af-9"></a><span class="p">}</span>
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>参考资料</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://stackoverflow.com/questions/1908492/unsigned-integer-in-javascript">Unsigned Integer in Javascript</a></li>
+<li><a class="reference external" href="http://www.w3school.com.cn/js/pro_js_operators_bitwise.asp">ECMAScript 位运算符</a></li>
+<li><a class="reference external" href="http://stackoverflow.com/questions/21903482/cidr-to-netmask-converion-in-javascript">CIDR to netmask converion in javascript</a></li>
+</ul>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../../categories/js/" rel="tag">js</a></li>
+            <li><a class="tag p-category" href="../../../categories/tech/" rel="tag">tech</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../../helloworld/" rel="prev" title="Hello Pelican &amp; GitHub Pages">前一篇</a>
+            </li>
+            <li class="next">
+                <a href="../vpn_advance_options_misc/" rel="next" title="VPN 高级选项那些事">后一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="nikolademo",
+            disqus_url="http://lennyhbt.github.io/posts/tech/js_bit_operation/",
+        disqus_title="JavaScript\u7684\u79fb\u4f4d\u8fd0\u7b97\u4e0eIP\u5730\u5740\u5904\u7406",
+        disqus_identifier="cache/posts/tech/js-bit-operation-with-ip-process.html",
+        disqus_config = function () {
+            this.language = "zh_cn";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="//disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="nikolademo";(function(){var a=document.createElement("script");a.async=true;a.src="//"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2015         <a href="mailto:hhhhhf@foxmail.com">lennyh</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+<br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../../assets/js/all-nocdn.js"></script><script src="../../../assets/js/colorbox-i18n/jquery.colorbox-zh-CN.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-cn");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script src="../../../assets/js/tipuesearch_set.js"></script><script src="../../../assets/js/tipuesearch.js"></script><script>
+$(document).ready(function() {
+    $('#tipue_search_input').tipuesearch({
+        'mode': 'json',
+        'contentLocation': '/assets/js/tipuesearch_content.json',
+        'showUrl': false
+    });
+});
+</script>
+</body>
+</html>
