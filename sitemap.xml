@@ -19,19 +19,27 @@
  </url>
  <url>
   <loc>http://lennyhbt.github.io/archive.html</loc>
-  <lastmod>2015-12-26T11:06:00Z</lastmod>
+  <lastmod>2016-01-08T09:13:00Z</lastmod>
  </url>
  <url>
   <loc>http://lennyhbt.github.io/categories/</loc>
-  <lastmod>2015-12-26T07:51:00Z</lastmod>
+  <lastmod>2015-12-31T15:11:00Z</lastmod>
  </url>
  <url>
   <loc>http://lennyhbt.github.io/categories/cat_ldap/</loc>
   <lastmod>2015-12-26T07:51:00Z</lastmod>
  </url>
  <url>
+  <loc>http://lennyhbt.github.io/categories/cat_life/</loc>
+  <lastmod>2015-12-31T15:11:00Z</lastmod>
+ </url>
+ <url>
   <loc>http://lennyhbt.github.io/categories/cat_tech/</loc>
   <lastmod>2015-12-26T07:51:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://lennyhbt.github.io/categories/fan-si/</loc>
+  <lastmod>2015-12-31T15:11:00Z</lastmod>
  </url>
  <url>
   <loc>http://lennyhbt.github.io/categories/js/</loc>
@@ -64,6 +72,10 @@
  <url>
   <loc>http://lennyhbt.github.io/listings/</loc>
   <lastmod>2015-12-26T07:51:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://lennyhbt.github.io/posts/fan-si-1/</loc>
+  <lastmod>2015-12-31T15:11:00Z</lastmod>
  </url>
  <url>
   <loc>http://lennyhbt.github.io/posts/helloworld/</loc>
