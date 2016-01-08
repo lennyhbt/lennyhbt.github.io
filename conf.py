@@ -1035,7 +1035,7 @@ SOCIAL_BUTTONS_CODE = """
 # """ % SITE_URL
 SEARCH_FORM = """
 <span class="navbar-form pull-left">
-<input type="text" id="tipue_search_input">
+<input type="text" class="form-control" placeholder="Search" id="tipue_search_input">
 </span>"""
 
 # Use content distribution networks for jQuery, twitter-bootstrap css and js,
