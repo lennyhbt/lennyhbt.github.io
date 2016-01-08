@@ -7,13 +7,16 @@ ${base.html_headstart()}
 ### Leave this block alone.
 </%block>
 ${template_hooks['extra_head']()}
+<style type="text/css">
+body { padding-top: 70px; }
+</style>
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">${messages("Skip to main content")}</a>
 
 <!-- Menubar -->
 
-<nav class="navbar navbar-inverse navbar-static-top">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container"><!-- This keeps the margins nice -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
@@ -43,6 +46,7 @@ ${template_hooks['extra_head']()}
 
             <ul class="nav navbar-nav navbar-right">
                 <%block name="belowtitle">
+                <p class="navbar-text"><strong>One man can make a difference</strong></p>
                 %if len(translations) > 1:
                     <li>${base.html_translations()}</li>
                 %endif
