@@ -6,6 +6,10 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
+  <loc>http://lennyhbt.github.io/categories/cat_fan-si.xml</loc>
+  <lastmod>2016-01-17T13:46:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://lennyhbt.github.io/categories/cat_ldap.xml</loc>
   <lastmod>2015-12-26T10:42:00Z</lastmod>
  </sitemap>
@@ -19,7 +23,7 @@
  </sitemap>
  <sitemap>
   <loc>http://lennyhbt.github.io/categories/fan-si.xml</loc>
-  <lastmod>2015-12-31T15:11:00Z</lastmod>
+  <lastmod>2016-01-17T13:46:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://lennyhbt.github.io/categories/js.xml</loc>
@@ -51,10 +55,10 @@
  </sitemap>
  <sitemap>
   <loc>http://lennyhbt.github.io/rss.xml</loc>
-  <lastmod>2015-12-31T15:11:00Z</lastmod>
+  <lastmod>2016-01-17T13:46:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://lennyhbt.github.io/sitemap.xml</loc>
-  <lastmod>2016-01-08T09:13:00Z</lastmod>
+  <lastmod>2016-01-17T13:46:00Z</lastmod>
  </sitemap>
 </sitemapindex>
