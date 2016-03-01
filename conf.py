@@ -21,7 +21,7 @@ BLOG_AUTHOR = "lennyh"  # (translatable)
 BLOG_TITLE = "v2h"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "http://lennyhbt.github.io/"
+SITE_URL = "http://qytz.github.io/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://github.com/lennyhbt/v2h/"
