@@ -1,4 +1,4 @@
-Sitemap: http://lennyhbt.github.io/sitemapindex.xml
+Sitemap: http://qytz.github.io/sitemapindex.xml
 
 User-Agent: *
-Host: lennyhbt.github.io
+Host: qytz.github.io

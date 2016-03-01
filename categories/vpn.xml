@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>v2h (vpn)</title><link>http://lennyhbt.github.io/</link><description></description><atom:link rel="self" type="application/rss+xml" href="http://lennyhbt.github.io/categories/vpn.xml"></atom:link><language>zh_cn</language><lastBuildDate>Sat, 26 Dec 2015 07:51:26 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>VPN 高级选项那些事</title><link>http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="vpn"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>v2h (vpn)</title><link>http://qytz.github.io/</link><description></description><atom:link rel="self" href="http://qytz.github.io/categories/vpn.xml" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Tue, 01 Mar 2016 15:54:00 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>VPN 高级选项那些事</title><link>http://qytz.github.io/posts/tech/vpn_advance_options_misc/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="vpn"&gt;
 &lt;h2&gt;一、VPN高级选项&lt;/h2&gt;
 &lt;div class="section" id="id1"&gt;
 &lt;h3&gt;VPN高级选项有哪些，都是什么意思&lt;/h3&gt;
@@ -163,4 +163,4 @@ DNS配置，路由，地址等信息，你确保不会改乱？&lt;/p&gt;
 &lt;p&gt;同理，系统的网络配置大家一起改，你确定不会改乱？
 这大概是一个趋势吧，只有一种或者两种网络连接的时候，我可以随便改，要是系统有很多种连接类型，可就不能胡来了。&lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>tech</category><category>vpn</category><guid>http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/</guid><pubDate>Wed, 24 Dec 2014 07:08:26 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>tech</category><category>vpn</category><guid>http://qytz.github.io/posts/tech/vpn_advance_options_misc/</guid><pubDate>Wed, 24 Dec 2014 07:08:26 GMT</pubDate></item></channel></rss>

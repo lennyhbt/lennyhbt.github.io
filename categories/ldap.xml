@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>v2h (ldap)</title><link>http://lennyhbt.github.io/</link><description></description><atom:link href="http://lennyhbt.github.io/categories/ldap.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Sat, 26 Dec 2015 10:42:34 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>小结LDAP</title><link>http://lennyhbt.github.io/posts/tech/ldap_summury/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="ldap"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>v2h (ldap)</title><link>http://qytz.github.io/</link><description></description><atom:link rel="self" href="http://qytz.github.io/categories/ldap.xml" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Tue, 01 Mar 2016 15:54:00 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>小结LDAP</title><link>http://qytz.github.io/posts/tech/ldap_summury/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="ldap"&gt;
 &lt;h2&gt;LDAP定义&lt;/h2&gt;
 &lt;p&gt;本文不打算重复LDAP的标准定义，仅谈一下自己的理解。&lt;/p&gt;
 &lt;p&gt;LDAP译为轻量级目录访问协议，一般网上经常拿其与关系型数据库做类比并比较他们的不同。&lt;/p&gt;
@@ -33,7 +33,7 @@ LDAP协议来反问的。从这个角度来讲，确实不应该将LDAP与关系
 电话号码的属性。&lt;/p&gt;
 &lt;p&gt;引用一张 &lt;a class="reference external" href="http://www.redbooks.ibm.com/abstracts/sg244986.html"&gt;Understanding LDAP
 Design and Implementation&lt;/a&gt; 的图示，&lt;/p&gt;
-&lt;a class="reference external image-reference" href="http://lennyhbt.github.io/galleries/ldap_dit.png"&gt;&lt;img alt="ldap dir info tree" src="http://lennyhbt.github.io/files/ldap_dit.png"&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="http://qytz.github.io/galleries/ldap_dit.png"&gt;&lt;img alt="ldap dir info tree" src="http://qytz.github.io/files/ldap_dit.png"&gt;&lt;/a&gt;
 &lt;p&gt;目录条目根据他们在目录信息树中的位置命名，上图底部的目录条目的DN唯一名是:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 cn=John Smith,ou=people,o=ibm,c=us.
@@ -57,4 +57,4 @@ The organizational group people has the DN of ou=people,o=ibm,c=us.
 &lt;li&gt;&lt;a class="reference external" href="http://www.redbooks.ibm.com/abstracts/sg244986.html"&gt;Understanding LDAP Design and Implementation&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://wiki.jabbercn.org/index.php?title=XEP-0216&amp;amp;oldid=115"&gt;OpenLDAP管理员指南&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>ldap</category><category>tech</category><guid>http://lennyhbt.github.io/posts/tech/ldap_summury/</guid><pubDate>Wed, 14 Jan 2015 04:46:26 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>ldap</category><category>tech</category><guid>http://qytz.github.io/posts/tech/ldap_summury/</guid><pubDate>Wed, 14 Jan 2015 04:46:26 GMT</pubDate></item></channel></rss>

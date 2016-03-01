@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>v2h (tech)</title><link>http://lennyhbt.github.io/</link><description></description><atom:link href="http://lennyhbt.github.io/categories/tech.xml" rel="self" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Sat, 26 Dec 2015 10:42:34 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>系统安全的思考</title><link>http://lennyhbt.github.io/posts/tech/system_security_thought/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;strong&gt;世上并没有绝对的安全，只有安全成本的问题。&lt;/strong&gt;&lt;/p&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>v2h (tech)</title><link>http://qytz.github.io/</link><description></description><atom:link rel="self" href="http://qytz.github.io/categories/tech.xml" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Tue, 01 Mar 2016 15:54:00 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>系统安全的思考</title><link>http://qytz.github.io/posts/tech/system_security_thought/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;p&gt;&lt;strong&gt;世上并没有绝对的安全，只有安全成本的问题。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;真正的安全不过是一种意识。&lt;/strong&gt;&lt;/p&gt;
 &lt;div class="section" id="id1"&gt;
 &lt;h2&gt;过往&lt;/h2&gt;
@@ -59,7 +59,7 @@ MAC/IP绑定，攻击防护，网页防篡改等，这在网络安全设备像�
 &lt;p&gt;系统的安全机制做的好，省了很多的麻烦。&lt;/p&gt;
 &lt;p&gt;我们需要更加深入的研究与实现系统的安全机制。&lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>security</category><category>tech</category><category>tech_misc</category><guid>http://lennyhbt.github.io/posts/tech/system_security_thought/</guid><pubDate>Wed, 14 Jan 2015 04:48:26 GMT</pubDate></item><item><title>小结LDAP</title><link>http://lennyhbt.github.io/posts/tech/ldap_summury/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="ldap"&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>security</category><category>tech</category><category>tech_misc</category><guid>http://qytz.github.io/posts/tech/system_security_thought/</guid><pubDate>Wed, 14 Jan 2015 04:48:26 GMT</pubDate></item><item><title>小结LDAP</title><link>http://qytz.github.io/posts/tech/ldap_summury/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="ldap"&gt;
 &lt;h2&gt;LDAP定义&lt;/h2&gt;
 &lt;p&gt;本文不打算重复LDAP的标准定义，仅谈一下自己的理解。&lt;/p&gt;
 &lt;p&gt;LDAP译为轻量级目录访问协议，一般网上经常拿其与关系型数据库做类比并比较他们的不同。&lt;/p&gt;
@@ -93,7 +93,7 @@ LDAP协议来反问的。从这个角度来讲，确实不应该将LDAP与关系
 电话号码的属性。&lt;/p&gt;
 &lt;p&gt;引用一张 &lt;a class="reference external" href="http://www.redbooks.ibm.com/abstracts/sg244986.html"&gt;Understanding LDAP
 Design and Implementation&lt;/a&gt; 的图示，&lt;/p&gt;
-&lt;a class="reference external image-reference" href="http://lennyhbt.github.io/galleries/ldap_dit.png"&gt;&lt;img alt="ldap dir info tree" src="http://lennyhbt.github.io/files/ldap_dit.png"&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="http://qytz.github.io/galleries/ldap_dit.png"&gt;&lt;img alt="ldap dir info tree" src="http://qytz.github.io/files/ldap_dit.png"&gt;&lt;/a&gt;
 &lt;p&gt;目录条目根据他们在目录信息树中的位置命名，上图底部的目录条目的DN唯一名是:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 cn=John Smith,ou=people,o=ibm,c=us.
@@ -117,7 +117,7 @@ The organizational group people has the DN of ou=people,o=ibm,c=us.
 &lt;li&gt;&lt;a class="reference external" href="http://www.redbooks.ibm.com/abstracts/sg244986.html"&gt;Understanding LDAP Design and Implementation&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://wiki.jabbercn.org/index.php?title=XEP-0216&amp;amp;oldid=115"&gt;OpenLDAP管理员指南&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>ldap</category><category>tech</category><guid>http://lennyhbt.github.io/posts/tech/ldap_summury/</guid><pubDate>Wed, 14 Jan 2015 04:46:26 GMT</pubDate></item><item><title>VPN 高级选项那些事</title><link>http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="vpn"&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>ldap</category><category>tech</category><guid>http://qytz.github.io/posts/tech/ldap_summury/</guid><pubDate>Wed, 14 Jan 2015 04:46:26 GMT</pubDate></item><item><title>VPN 高级选项那些事</title><link>http://qytz.github.io/posts/tech/vpn_advance_options_misc/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="vpn"&gt;
 &lt;h2&gt;一、VPN高级选项&lt;/h2&gt;
 &lt;div class="section" id="id1"&gt;
 &lt;h3&gt;VPN高级选项有哪些，都是什么意思&lt;/h3&gt;
@@ -281,7 +281,7 @@ DNS配置，路由，地址等信息，你确保不会改乱？&lt;/p&gt;
 &lt;p&gt;同理，系统的网络配置大家一起改，你确定不会改乱？
 这大概是一个趋势吧，只有一种或者两种网络连接的时候，我可以随便改，要是系统有很多种连接类型，可就不能胡来了。&lt;/p&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>tech</category><category>vpn</category><guid>http://lennyhbt.github.io/posts/tech/vpn_advance_options_misc/</guid><pubDate>Wed, 24 Dec 2014 07:08:26 GMT</pubDate></item><item><title>JavaScript的移位运算与IP地址处理</title><link>http://lennyhbt.github.io/posts/tech/js_bit_operation/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="js"&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>tech</category><category>vpn</category><guid>http://qytz.github.io/posts/tech/vpn_advance_options_misc/</guid><pubDate>Wed, 24 Dec 2014 07:08:26 GMT</pubDate></item><item><title>JavaScript的移位运算与IP地址处理</title><link>http://qytz.github.io/posts/tech/js_bit_operation/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="js"&gt;
 &lt;h2&gt;JS左移运算符号位的问题&lt;/h2&gt;
 &lt;p&gt;最近在做项目时有一个需求，将用户输入的 &lt;em&gt;地址/掩码&lt;/em&gt; 对解析出来，并将数字掩码转换成点分的格式。&lt;/p&gt;
 &lt;p&gt;想到在C代码里面应该还算容易实现，通过最大32位整数位移就可完成，但是在 JavaScript 中如何实现还是很不清楚的。&lt;/p&gt;
@@ -325,4 +325,4 @@ JavaScript的左移运算保留数字的符号位。例如，如果把 -2 左移
 &lt;li&gt;&lt;a class="reference external" href="http://www.w3school.com.cn/js/pro_js_operators_bitwise.asp"&gt;ECMAScript 位运算符&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="http://stackoverflow.com/questions/21903482/cidr-to-netmask-converion-in-javascript"&gt;CIDR to netmask converion in javascript&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;&lt;/div&gt;</description><category>js</category><category>tech</category><guid>http://lennyhbt.github.io/posts/tech/js_bit_operation/</guid><pubDate>Wed, 17 Dec 2014 11:24:26 GMT</pubDate></item></channel></rss>
+&lt;/div&gt;&lt;/div&gt;</description><category>js</category><category>tech</category><guid>http://qytz.github.io/posts/tech/js_bit_operation/</guid><pubDate>Wed, 17 Dec 2014 11:24:26 GMT</pubDate></item></channel></rss>
