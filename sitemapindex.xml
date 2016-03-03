@@ -7,7 +7,7 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>http://qytz.github.io/categories/cat_fan-si.xml</loc>
-  <lastmod>2016-03-01T15:54:00Z</lastmod>
+  <lastmod>2016-03-03T13:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/cat_ldap.xml</loc>
@@ -23,7 +23,7 @@
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/fan-si.xml</loc>
-  <lastmod>2016-03-01T15:54:00Z</lastmod>
+  <lastmod>2016-03-03T13:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/js.xml</loc>
@@ -55,10 +55,10 @@
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/rss.xml</loc>
-  <lastmod>2016-03-01T15:54:00Z</lastmod>
+  <lastmod>2016-03-03T13:19:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/sitemap.xml</loc>
-  <lastmod>2016-03-01T15:54:00Z</lastmod>
+  <lastmod>2016-03-03T13:19:00Z</lastmod>
  </sitemap>
 </sitemapindex>
