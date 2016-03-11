@@ -42,7 +42,7 @@ class NavStories(ConfigPlugin):
             for p in site.pages:
                 if lang in p.translated_to and not p.meta('hidefromnav'):
                     new.append(p)
-            new_entries = tuple(sorted([(p.permalink(lang), p.title(lang)) for p in new]))
+            new_entries = tuple([(p.permalink(lang), p.title(lang)) for p in new])
 
             old_entries = site.config['NAVIGATION_LINKS'].values[lang]
             site.config['NAVIGATION_LINKS'].values[lang] = old_entries + new_entries
