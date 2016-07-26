@@ -136,6 +136,8 @@ NAVIGATION_LINKS = {
 
 # Name of the theme to use.
 THEME = "v2h-theme"
+#THEME = "material-theme"
+#THEME = "yesplease"
 
 # Primary color of your theme. This will be used to customize your theme and
 # auto-generate related colors in POSTS_SECTION_COLORS. Must be a HEX value.
@@ -905,8 +907,8 @@ PRETTY_URLS = True
 # EXTRA_HEAD_DATA = """<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">"""
 EXTRA_HEAD_DATA = """
 <link rel="stylesheet" type="text/css" href="/assets/css/tipuesearch.css">
-<div id="tipue_search_content" style="display: none; margin-left: auto; margin-right: auto; padding: 20px;"></div>
 """
+#<div id="tipue_search_content" style="display: none; margin-left: auto; margin-right: auto; padding: 20px;"></div>
 # USE_KATEX = False
 
 # Do you want to customize the nbconversion of your IPython notebook?
@@ -1060,15 +1062,57 @@ SEARCH_FORM = """
 # in the default template (base.tmpl).
 # (translatable)
 # BODY_END = ""
+#BODY_END = """
+#<script src="/assets/js/tipuesearch_set.js"></script>
+#<script src="/assets/js/tipuesearch.js"></script>
+#<script>
+#$(document).ready(function() {
+#    $('#tipue_search_input').tipuesearch({
+#        'mode': 'json',
+#        'contentLocation': '/assets/js/tipuesearch_content.json',
+#        'showUrl': false
+#    });
+#});
+#</script>
+#"""
 BODY_END = """
-<script src="/assets/js/tipuesearch_set.js"></script>
-<script src="/assets/js/tipuesearch.js"></script>
+<!-- Modal -->
+<div id="search-results" class="modal fade" role="dialog" style="height: 80%;">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Search Results:</h4>
+      </div>
+      <div class="modal-body" id="tipue_search_content" style="max-height: 600px; overflow-y: auto;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 <script>
 $(document).ready(function() {
-    $('#tipue_search_input').tipuesearch({
-        'mode': 'json',
-        'contentLocation': '/assets/js/tipuesearch_content.json',
-        'showUrl': false
+    $.when(
+        $.getScript( "/assets/js/tipuesearch_set.js" ),
+        $.getScript( "/assets/js/tipuesearch.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+    ).done(function() {
+        $('#tipue_search_input').tipuesearch({
+            'mode': 'json',
+            'contentLocation': '/assets/js/tipuesearch_content.json'
+        });
+        $('#tipue_search_input').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $('#search-results').modal()
+            }
+        });
     });
 });
 </script>

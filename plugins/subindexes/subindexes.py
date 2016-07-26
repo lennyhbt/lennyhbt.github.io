@@ -66,6 +66,7 @@ class SubIndexes(Task):
             for dirname, post_list in groups.items():
                 context = {}
                 context["items"] = []
+                context["pagekind"] = ["subindex"]
                 should_render = True
                 output_name = os.path.join(kw['output_folder'], dirname, kw['index_file'])
                 short_destination = os.path.join(dirname, kw['index_file'])

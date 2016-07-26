@@ -27,13 +27,17 @@
 from __future__ import unicode_literals, print_function
 import codecs
 from collections import defaultdict
+import io
 import math
 from os.path import relpath
 import re
 from textwrap import dedent
 
 from nikola.plugin_categories import Command
-from nikola.utils import bytes_str, LOGGER, sys_decode, unicode_str
+from nikola.utils import bytes_str, LOGGER, req_missing, sys_decode, unicode_str
+from nikola.plugins.compile.ipynb import flag as ipy_flag
+if ipy_flag:
+    from nikola.plugins.compile.ipynb import current_nbformat, ipy_modern, nbformat
 
 
 def add_tags(site, tags, filepaths, dry_run=False):
@@ -57,18 +61,21 @@ def add_tags(site, tags, filepaths, dry_run=False):
     OLD = 'old'
     NEW = 'new'
 
+    all_new_tags = []
     for post in posts:
-        new_tags = _add_tags(post.tags[:], tags)
+        old_tags = _post_tags(post)
+        new_tags = _add_tags(old_tags[:], tags)
+        all_new_tags.append(new_tags)
 
         if dry_run:
             print(FMT.format(
-                post.source_path, OLD, post.tags, NEW, new_tags)
+                post.source_path, OLD, old_tags, NEW, new_tags)
             )
 
-        elif new_tags != post.tags:
-            _replace_tags_line(post, new_tags)
+        elif new_tags != old_tags:
+            _replace_tags(site, post, new_tags)
 
-    return new_tags
+    return all_new_tags
 
 
 def list_tags(site, sorting='alpha'):
@@ -79,15 +86,15 @@ def list_tags(site, sorting='alpha'):
 
     """
 
-    tags = site.posts_per_tag
+    posts_per_tag = _posts_per_tag(site)
     if sorting == 'count':
-        tags = sorted(tags, key=lambda tag: len(tags[tag]), reverse=True)
+        tags = sorted(posts_per_tag, key=lambda tag: len(posts_per_tag[tag]), reverse=True)
     else:
-        tags = sorted(site.posts_per_tag.keys())
+        tags = sorted(posts_per_tag)
 
     for tag in tags:
         if sorting == 'count':
-            show = '{0:>4} {1}'.format(len(site.posts_per_tag[tag]), tag)
+            show = '{0:>4} {1}'.format(len(posts_per_tag[tag]), tag)
         else:
             show = tag
         print(show)
@@ -119,18 +126,21 @@ def merge_tags(site, tags, filepaths, dry_run=False):
     OLD = 'old'
     NEW = 'new'
 
+    all_new_tags = []
     for post in posts:
-        new_tags = _clean_tags(post.tags[:], set(tags[:-1]), tags[-1])
+        old_tags = _post_tags(post)
+        new_tags = _clean_tags(old_tags[:], set(tags[:-1]), tags[-1])
+        all_new_tags.append(new_tags)
 
         if dry_run:
             print(FMT.format(
-                post.source_path, OLD, post.tags, NEW, new_tags)
+                post.source_path, OLD, old_tags, NEW, new_tags)
             )
 
-        elif new_tags != post.tags:
-            _replace_tags_line(post, new_tags)
+        elif new_tags != old_tags:
+            _replace_tags(site, post, new_tags)
 
-    return new_tags
+    return all_new_tags
 
 
 def remove_tags(site, tags, filepaths, dry_run=False):
@@ -157,18 +167,21 @@ def remove_tags(site, tags, filepaths, dry_run=False):
     if len(posts) == 0:
         new_tags = []
 
+    all_new_tags = []
     for post in posts:
-        new_tags = _remove_tags(post.tags[:], tags)
+        old_tags = _post_tags(post)
+        new_tags = _remove_tags(old_tags[:], tags)
+        all_new_tags.append(new_tags)
 
         if dry_run:
             print(FMT.format(
-                post.source_path, OLD, post.tags, NEW, new_tags)
+                post.source_path, OLD, old_tags, NEW, new_tags)
             )
 
-        elif new_tags != post.tags:
-            _replace_tags_line(post, new_tags)
+        elif new_tags != old_tags:
+            _replace_tags(site, post, new_tags)
 
-    return new_tags
+    return all_new_tags
 
 
 def search_tags(site, term):
@@ -178,11 +191,11 @@ def search_tags(site, term):
 
     """
 
-    tags = site.posts_per_tag
+    posts_per_tag = _posts_per_tag(site)
     search_re = re.compile(term.lower())
 
     matches = [
-        tag for tag in tags
+        tag for tag in posts_per_tag
         if term in tag.lower() or search_re.match(tag.lower())
     ]
 
@@ -215,18 +228,21 @@ def sort_tags(site, filepaths, dry_run=False):
     OLD = 'old'
     NEW = 'new'
 
+    all_new_tags = []
     for post in posts:
-        new_tags = sorted(post.tags)
+        old_tags = _post_tags(post)
+        new_tags = sorted(old_tags)
+        all_new_tags.append(new_tags)
 
         if dry_run:
             print(FMT.format(
-                post.source_path, OLD, post.tags, NEW, new_tags)
+                post.source_path, OLD, old_tags, NEW, new_tags)
             )
 
-        elif new_tags != post.tags:
-            _replace_tags_line(post, new_tags)
+        elif new_tags != old_tags:
+            _replace_tags(site, post, new_tags)
 
-    return new_tags
+    return all_new_tags
 
 
 def _format_doc_string(function):
@@ -235,7 +251,40 @@ def _format_doc_string(function):
     return '\n'.join(doc_lines) + '\n'
 
 
+def _post_tags(post):
+    """Return the tags of a post, including special tags."""
+    tags = post.tags[:]
+    if post.is_draft:
+        tags.append('draft')
+
+    if post.is_private:
+        tags.append('private')
+
+    return tags
+
+
+def _posts_per_tag(site, include_special=True):
+    tags = site.posts_per_tag.copy()
+    if not include_special:
+        return tags
+
+    skipped_posts = [post for post in site.all_posts if not post.use_in_feeds]
+    for post in skipped_posts:
+        post_tags = post.tags
+        if post.is_draft:
+            post_tags.append('draft')
+        if post.is_private:
+            post_tags.append('private')
+
+        for tag in post_tags:
+            if post not in tags[tag]:
+                tags[tag].append(post)
+
+    return tags
+
+
 class CommandTags(Command):
+
     """ Manage tags on the site.
 
     This plugin is inspired by `jtags <https://github.com/ttscoff/jtag>`_.
@@ -610,6 +659,32 @@ def _remove_tags(tags, removals):
             tags.remove(tag)
 
     return tags
+
+
+def _replace_tags(site, post, tags):
+    """Chooses the appropriate replace method based on post type."""
+    compiler = site.get_compiler(post.source_path)
+    if compiler.name == 'ipynb':
+        _replace_ipynb_tags(post, tags)
+
+    else:
+        _replace_tags_line(post, tags)
+
+
+def _replace_ipynb_tags(post, tags):
+    """Replaces tags in the notebook metadata with the given tags."""
+    if ipy_flag is None:
+        req_missing(['ipython[notebook]>=2.0.0'], 'build this site (compile ipynb)')
+
+    nb = nbformat.read(post.source_path, current_nbformat)
+    metadata = nb['metadata']['nikola']
+    metadata['tags'] = ','.join(tags)
+
+    with io.open(post.source_path, "w+", encoding="utf8") as fd:
+        if ipy_modern:
+            nbformat.write(nb, fd, 4)
+        else:
+            nbformat.write(nb, fd, 'ipynb')
 
 
 def _replace_tags_line(post, tags):
