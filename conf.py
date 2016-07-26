@@ -25,6 +25,7 @@ SITE_URL = "http://qytz.github.io/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://github.com/lennyhbt/v2h/"
+AUTHOR_GITHUB = "https://github.com/qytz"
 BLOG_EMAIL = "hhhhhf@foxmail.com"
 BLOG_DESCRIPTION = "All about my history, now and future."  # (translatable)
 
@@ -777,7 +778,7 @@ src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
 """
 # A small copyright notice for the page footer (in HTML).
 # (translatable)
-CONTENT_FOOTER = 'Contents &copy; {date}         <a href="mailto:{email}">{author}</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         {license}'
+CONTENT_FOOTER = 'Contents &copy; {date}         <a href="mailto:{email}">{author}</a> | <a href="{author_github}">{author}</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         {license}'
 
 # Things that will be passed to CONTENT_FOOTER.format().  This is done
 # for translatability, as dicts are not formattable.  Nikola will
@@ -795,6 +796,7 @@ CONTENT_FOOTER_FORMATS = {
         (),
         {
             "email": BLOG_EMAIL,
+            "author_github": AUTHOR_GITHUB,
             "author": BLOG_AUTHOR,
             "date": time.gmtime().tm_year,
             "license": LICENSE
@@ -908,7 +910,6 @@ PRETTY_URLS = True
 EXTRA_HEAD_DATA = """
 <link rel="stylesheet" type="text/css" href="/assets/css/tipuesearch.css">
 """
-#<div id="tipue_search_content" style="display: none; margin-left: auto; margin-right: auto; padding: 20px;"></div>
 # USE_KATEX = False
 
 # Do you want to customize the nbconversion of your IPython notebook?
