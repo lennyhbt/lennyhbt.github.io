@@ -15,6 +15,7 @@ article: http://ogp.me/ns/article#
             <script src="../assets/js/html5shiv.min.js"></script>
             <script src="../assets/js/respond.min.js"></script>
         <![endif]--><link rel="stylesheet" type="text/css" href="../../assets/css/tipuesearch.css">
+<link rel="stylesheet" type="text/css" href="../../assets/css/chinese.css">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
@@ -310,9 +311,9 @@ vpn-overview.txt -&gt; vpn-manager-api.txt -&gt; vpn-connection-api.txt</p>
 <p>Connman是以daemon进程在系统后台运行的，要访问Connman提供的服务，只能通过进程间通信类似的机制。
 事实上Connman提供的服务都是以D-Bus方法即信号作为API接口的。</p>
 <p>例如，新建/删除VPN、连接VPN的接口如下：</p>
-<pre class="code c"><a name="rest_code_1a34db04352b445da383e871003c58fa-1"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">create</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
-<a name="rest_code_1a34db04352b445da383e871003c58fa-2"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">remove</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
-<a name="rest_code_1a34db04352b445da383e871003c58fa-3"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">do_connect</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<pre class="code c"><a name="rest_code_02386afd7b114b629a146cc9c871961d-1"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">create</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_02386afd7b114b629a146cc9c871961d-2"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">remove</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_02386afd7b114b629a146cc9c871961d-3"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">do_connect</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
 </pre>
 <div class="section" id="qtd-bus">
 <h3>Qt对D-Bus的支持</h3>
@@ -408,36 +409,36 @@ DNS配置，路由，地址等信息，你确保不会改乱？</p>
 <p>因为考虑到JavaScript是弱类型的语言，首先就会遇到数字和字符串的转换等问题，接着还有按位操作的问题也不知道在JavaScript中如何实现。
 然后开始查询资料尝试解决这些问题。数字和字符串类型的转换是不需要的，写代码尝试了下应该JavaScript自动做了类型转换。</p>
 <p>首先想到的思路是根据最大32位整数位移获取掩码对应的整数值，然后将结果转换成点分格式的字符串。在网上找到了如下的代码。</p>
-<pre class="code javascript"><a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-1"></a><span class="kd">function</span> <span class="nx">ip2long</span><span class="p">(</span><span class="nx">ip</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-2"></a>    <span class="kd">var</span> <span class="nx">ipl</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-3"></a>    <span class="nx">ip</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">octet</span> <span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-4"></a>        <span class="nx">ipl</span><span class="o">&lt;&lt;=</span><span class="mi">8</span><span class="p">;</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-5"></a>        <span class="nx">ipl</span><span class="o">+=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">octet</span><span class="p">);</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-6"></a>    <span class="p">});</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-7"></a>    <span class="k">return</span><span class="p">(</span><span class="nx">ipl</span> <span class="o">&gt;&gt;&gt;</span><span class="mi">0</span><span class="p">);</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-8"></a><span class="p">}</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-9"></a>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-10"></a><span class="kd">function</span> <span class="nx">long2ip</span> <span class="p">(</span><span class="nx">ipl</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-11"></a>    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;&gt;</span><span class="mi">24</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-12"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">16</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-13"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">8</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-14"></a>        <span class="p">(</span><span class="nx">ipl</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
-<a name="rest_code_e30a8e7e5f3a40feaaa1ded6830957e4-15"></a><span class="p">}</span>
+<pre class="code javascript"><a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-1"></a><span class="kd">function</span> <span class="nx">ip2long</span><span class="p">(</span><span class="nx">ip</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-2"></a>    <span class="kd">var</span> <span class="nx">ipl</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-3"></a>    <span class="nx">ip</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">octet</span> <span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-4"></a>        <span class="nx">ipl</span><span class="o">&lt;&lt;=</span><span class="mi">8</span><span class="p">;</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-5"></a>        <span class="nx">ipl</span><span class="o">+=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">octet</span><span class="p">);</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-6"></a>    <span class="p">});</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-7"></a>    <span class="k">return</span><span class="p">(</span><span class="nx">ipl</span> <span class="o">&gt;&gt;&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-8"></a><span class="p">}</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-9"></a>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-10"></a><span class="kd">function</span> <span class="nx">long2ip</span> <span class="p">(</span><span class="nx">ipl</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-11"></a>    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;&gt;</span><span class="mi">24</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-12"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">16</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-13"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">8</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-14"></a>        <span class="p">(</span><span class="nx">ipl</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
+<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-15"></a><span class="p">}</span>
 </pre>
 <p>有了这两个方法就可以将计算得到的掩码整数值转换成点分格式了。
 但是在做位运算的时候发现了一个坑，在一边查资料一边尝试实现的第一个版本中，掩码为0和掩码为32产生的结果一样，都是255.255.255.255。</p>
 <!-- note
 JavaScript的左移运算保留数字的符号位。例如，如果把 -2 左移 5 位，得到的是 -64，而不是 64。符号仍然存储在第32位中。 即使输出二进制字符串形式的负数，显示的也是负号形式（例如，-2 将显示 -10。） -->
 <p>看来此方案不可行，接着查资料发现了一个新的思路，根据掩码生成四个小于等于255的值，将这四个值拼成点分格式。这样实现避免了对符号位的操作，甚好。</p>
-<pre class="code javascript"><a name="rest_code_f07fe1362c144c0481019838cddc953a-1"></a><span class="kd">function</span> <span class="nx">createNetmaskAddr</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-2"></a>  <span class="kd">var</span> <span class="nx">mask</span><span class="o">=</span><span class="p">[];</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-3"></a>  <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-4"></a>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-5"></a>    <span class="nx">mask</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">256</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="nx">n</span><span class="p">));</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-6"></a>    <span class="nx">bitCount</span> <span class="o">-=</span> <span class="nx">n</span><span class="p">;</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-7"></a>  <span class="p">}</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-8"></a>  <span class="k">return</span> <span class="nx">mask</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
-<a name="rest_code_f07fe1362c144c0481019838cddc953a-9"></a><span class="p">}</span>
+<pre class="code javascript"><a name="rest_code_ffd11969fb984a43ab357eb7b185632e-1"></a><span class="kd">function</span> <span class="nx">createNetmaskAddr</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-2"></a>  <span class="kd">var</span> <span class="nx">mask</span><span class="o">=</span><span class="p">[];</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-3"></a>  <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-4"></a>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-5"></a>    <span class="nx">mask</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">256</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="nx">n</span><span class="p">));</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-6"></a>    <span class="nx">bitCount</span> <span class="o">-=</span> <span class="nx">n</span><span class="p">;</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-7"></a>  <span class="p">}</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-8"></a>  <span class="k">return</span> <span class="nx">mask</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
+<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-9"></a><span class="p">}</span>
 </pre>
 </div>
 <div class="section" id="id1">
