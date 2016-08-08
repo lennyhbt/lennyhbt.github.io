@@ -909,6 +909,7 @@ PRETTY_URLS = True
 # EXTRA_HEAD_DATA = """<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.3.0/katex.min.css">"""
 EXTRA_HEAD_DATA = """
 <link rel="stylesheet" type="text/css" href="/assets/css/tipuesearch.css">
+<link rel="stylesheet" type="text/css" href="/assets/css/chinese.css">
 """
 # USE_KATEX = False
 
