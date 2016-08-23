@@ -189,86 +189,86 @@ article: http://ogp.me/ns/article#
 </table>
 </blockquote>
 <p>举例</p>
-<pre class="code shell"><a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-1"></a>/// 取得字符串长度
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-2"></a><span class="nv">string</span><span class="o">=</span>abc12342341          //等号二边不要有空格
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-3"></a><span class="nb">echo</span> <span class="si">${#</span><span class="nv">string</span><span class="si">}</span>             //结果11
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-4"></a>expr length <span class="nv">$string</span>         //结果11
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-5"></a>expr <span class="s2">"</span><span class="nv">$string</span><span class="s2">"</span> : <span class="s2">".*"</span>       //结果11 冒号二边要有空格,这里的:根match的用法差不多
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-6"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-7"></a>/// 字符串所在位置
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-8"></a>expr index <span class="nv">$string</span> <span class="s1">'123'</span>    //结果4 字符串对应的下标是从1开始的
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-9"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abc"</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-10"></a>expr index <span class="nv">$str</span> <span class="s2">"b"</span>  <span class="c1"># 2</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-11"></a>expr index <span class="nv">$str</span> <span class="s2">"x"</span>  <span class="c1"># 0</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-12"></a>expr index <span class="nv">$str</span> <span class="s2">""</span>   <span class="c1"># 0</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-13"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-14"></a>/// 字符串截取
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-15"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span>      //2342341  从第4位开始截取后面所有字符串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-16"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">3</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>    //123423   从第3位开始截取后面6位
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-17"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">: -4</span><span class="si">}</span>    //2341  :右边有空格   截取后4位
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-18"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:(-4)</span><span class="si">}</span>   //2341  同上
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-19"></a>expr substr <span class="nv">$string</span> <span class="m">3</span> <span class="m">3</span>   //123  从第3位开始截取后面3位
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-20"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abcdef"</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-21"></a>expr substr <span class="s2">"</span><span class="nv">$str</span><span class="s2">"</span> <span class="m">4</span> <span class="m">5</span>  <span class="c1"># 从第四个位置开始取5个字符， def</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-22"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-6):</span><span class="nv">5</span><span class="si">}</span>        <span class="c1"># 从倒数第二个位置向左提取字符串, abcde</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-23"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-4):</span><span class="nv">3</span><span class="si">}</span>      <span class="c1"># 从倒数第二个位置向左提取6个字符, cde</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-24"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-25"></a>/// 匹配显示内容
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-26"></a>expr match <span class="nv">$string</span> <span class="s1">'\([a-c]*[0-9]*\)'</span>  //abc12342341
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-27"></a>expr <span class="nv">$string</span> : <span class="s1">'\([a-c]*[0-9]\)'</span>       //abc1
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-28"></a>expr <span class="nv">$string</span> : <span class="s1">'.*\([0-9][0-9][0-9]\)'</span> //341 显示括号中匹配的内容
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-29"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-30"></a>/// 截取不匹配的内容
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-31"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#a*3</span><span class="si">}</span>     //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-32"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#c*3</span><span class="si">}</span>     //abc12342341  这样什么也没有匹配到
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-33"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#*c1*3</span><span class="si">}</span>   //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-34"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">##a*3</span><span class="si">}</span>    //41     从<span class="nv">$string</span>左边开始，去掉最长匹配子串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-35"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%3*1</span><span class="si">}</span>     //abc12342  从<span class="nv">$string</span>右边开始，去掉最短匹配子串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-36"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%%3*1</span><span class="si">}</span>    //abc12     从<span class="nv">$string</span>右边开始，去掉最长匹配子串
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-37"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abbc,def,ghi,abcjkl"</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-38"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#a*c</span><span class="si">}</span>     <span class="c1"># 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-39"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##a*c</span><span class="si">}</span>    <span class="c1"># 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-40"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#</span><span class="s2">"a*c"</span><span class="si">}</span>   <span class="c1"># 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-41"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##</span><span class="s2">"a*c"</span><span class="si">}</span>  <span class="c1"># 输出abbc,def,ghi,abcjkl 同理</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-42"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#*a*c*</span><span class="si">}</span>   <span class="c1"># 空</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-43"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##*a*c*</span><span class="si">}</span>  <span class="c1"># 空</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-44"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#d*f)     # 输出abbc,def,ghi,abcjkl,</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-45"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">#*d*f</span><span class="si">}</span><span class="p">    # 输出,ghi,abcjkl</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-46"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*l</span><span class="si">}</span><span class="p">     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-47"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%%b*l</span><span class="si">}</span><span class="p">    # a             两个百分号表示(%%)表示从右边截取最长的匹配</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-48"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*c</span><span class="si">}</span><span class="p">     # abbc,def,ghi,abcjkl</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-49"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-50"></a><span class="p">/// 匹配并且替换</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-51"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/23/bb</span><span class="si">}</span><span class="p">   //abc1bb42341  替换一次</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-52"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">//23/bb</span><span class="si">}</span><span class="p">  //abc1bb4bb41  双斜杠替换所有匹配</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-53"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/#abc/bb</span><span class="si">}</span><span class="p"> //bb12342341   #以什么开头来匹配，根php中的^有点像</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-54"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/%41/bb</span><span class="si">}</span><span class="p">  //abc123423bb  %以什么结尾来匹配，根php中的</span>$<span class="nv">有点像</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-55"></a><span class="p">str=</span><span class="s2">"apple, tree, apple tree"</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-56"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/apple/APPLE</span><span class="si">}</span><span class="p">   # 替换第一次出现的apple</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-57"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">//apple/APPLE</span><span class="si">}</span><span class="p">  # 替换所有apple</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-58"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/#apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple开头，则用APPLE替换它</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-59"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/%apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple结尾，则用APPLE替换它</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-60"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-61"></a><span class="p">/// 比较</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-62"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> == a* ]]        # 逻辑真 (pattern matching)</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-63"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> =~ .*</span><span class="se">\.</span><span class="nv">txt</span><span class="p"> ]]   # 逻辑真 (regex matching)</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-64"></a><span class="p">[[ </span><span class="s2">"abc"</span><span class="p"> == </span><span class="s2">"abc"</span><span class="p"> ]]       # 逻辑真 (string comparision)</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-65"></a><span class="p">[[ </span><span class="s2">"11"</span><span class="p"> &lt; </span><span class="s2">"2"</span><span class="p"> ]]           # 逻辑真 (string comparision), 按ascii值比较</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-66"></a>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-67"></a><span class="p">/// 字符串删除</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-68"></a>$<span class="p"> test=</span><span class="s1">'c:/windows/boot.ini'</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-69"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#/</span><span class="si">}</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-70"></a><span class="p">c:/windows/boot.ini</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-71"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#*/</span><span class="si">}</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-72"></a><span class="p">windows/boot.ini</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-73"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-74"></a><span class="p">boot.ini</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-75"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-76"></a><span class="p">c:/windows</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-77"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%%/*</span><span class="si">}</span><span class="p"></span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-78"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">#substring正则表达式</span><span class="si">}</span><span class="nv">从字符串开头开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-79"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">%substring正则表达式</span><span class="si">}</span><span class="nv">从字符串结尾开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
-<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-80"></a><span class="p">#注意：</span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p">,</span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"> 分别是得到文件名，或者目录地址最简单方法。</span>
+<pre class="code shell"><a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-1"></a>/// 取得字符串长度
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-2"></a><span class="nv">string</span><span class="o">=</span>abc12342341          //等号二边不要有空格
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-3"></a><span class="nb">echo</span> <span class="si">${#</span><span class="nv">string</span><span class="si">}</span>             //结果11
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-4"></a>expr length <span class="nv">$string</span>         //结果11
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-5"></a>expr <span class="s2">"</span><span class="nv">$string</span><span class="s2">"</span> : <span class="s2">".*"</span>       //结果11 冒号二边要有空格,这里的:根match的用法差不多
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-6"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-7"></a>/// 字符串所在位置
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-8"></a>expr index <span class="nv">$string</span> <span class="s1">'123'</span>    //结果4 字符串对应的下标是从1开始的
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-9"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abc"</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-10"></a>expr index <span class="nv">$str</span> <span class="s2">"b"</span>  <span class="c1"># 2</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-11"></a>expr index <span class="nv">$str</span> <span class="s2">"x"</span>  <span class="c1"># 0</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-12"></a>expr index <span class="nv">$str</span> <span class="s2">""</span>   <span class="c1"># 0</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-13"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-14"></a>/// 字符串截取
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-15"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span>      //2342341  从第4位开始截取后面所有字符串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-16"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">3</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>    //123423   从第3位开始截取后面6位
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-17"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">: -4</span><span class="si">}</span>    //2341  :右边有空格   截取后4位
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-18"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:(-4)</span><span class="si">}</span>   //2341  同上
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-19"></a>expr substr <span class="nv">$string</span> <span class="m">3</span> <span class="m">3</span>   //123  从第3位开始截取后面3位
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-20"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abcdef"</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-21"></a>expr substr <span class="s2">"</span><span class="nv">$str</span><span class="s2">"</span> <span class="m">4</span> <span class="m">5</span>  <span class="c1"># 从第四个位置开始取5个字符， def</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-22"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-6):</span><span class="nv">5</span><span class="si">}</span>        <span class="c1"># 从倒数第二个位置向左提取字符串, abcde</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-23"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-4):</span><span class="nv">3</span><span class="si">}</span>      <span class="c1"># 从倒数第二个位置向左提取6个字符, cde</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-24"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-25"></a>/// 匹配显示内容
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-26"></a>expr match <span class="nv">$string</span> <span class="s1">'\([a-c]*[0-9]*\)'</span>  //abc12342341
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-27"></a>expr <span class="nv">$string</span> : <span class="s1">'\([a-c]*[0-9]\)'</span>       //abc1
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-28"></a>expr <span class="nv">$string</span> : <span class="s1">'.*\([0-9][0-9][0-9]\)'</span> //341 显示括号中匹配的内容
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-29"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-30"></a>/// 截取不匹配的内容
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-31"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#a*3</span><span class="si">}</span>     //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-32"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#c*3</span><span class="si">}</span>     //abc12342341  这样什么也没有匹配到
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-33"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#*c1*3</span><span class="si">}</span>   //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-34"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">##a*3</span><span class="si">}</span>    //41     从<span class="nv">$string</span>左边开始，去掉最长匹配子串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-35"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%3*1</span><span class="si">}</span>     //abc12342  从<span class="nv">$string</span>右边开始，去掉最短匹配子串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-36"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%%3*1</span><span class="si">}</span>    //abc12     从<span class="nv">$string</span>右边开始，去掉最长匹配子串
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-37"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abbc,def,ghi,abcjkl"</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-38"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#a*c</span><span class="si">}</span>     <span class="c1"># 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-39"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##a*c</span><span class="si">}</span>    <span class="c1"># 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-40"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#</span><span class="s2">"a*c"</span><span class="si">}</span>   <span class="c1"># 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-41"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##</span><span class="s2">"a*c"</span><span class="si">}</span>  <span class="c1"># 输出abbc,def,ghi,abcjkl 同理</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-42"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#*a*c*</span><span class="si">}</span>   <span class="c1"># 空</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-43"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##*a*c*</span><span class="si">}</span>  <span class="c1"># 空</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-44"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#d*f)     # 输出abbc,def,ghi,abcjkl,</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-45"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">#*d*f</span><span class="si">}</span><span class="p">    # 输出,ghi,abcjkl</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-46"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*l</span><span class="si">}</span><span class="p">     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-47"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%%b*l</span><span class="si">}</span><span class="p">    # a             两个百分号表示(%%)表示从右边截取最长的匹配</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-48"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*c</span><span class="si">}</span><span class="p">     # abbc,def,ghi,abcjkl</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-49"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-50"></a><span class="p">/// 匹配并且替换</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-51"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/23/bb</span><span class="si">}</span><span class="p">   //abc1bb42341  替换一次</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-52"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">//23/bb</span><span class="si">}</span><span class="p">  //abc1bb4bb41  双斜杠替换所有匹配</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-53"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/#abc/bb</span><span class="si">}</span><span class="p"> //bb12342341   #以什么开头来匹配，根php中的^有点像</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-54"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/%41/bb</span><span class="si">}</span><span class="p">  //abc123423bb  %以什么结尾来匹配，根php中的</span>$<span class="nv">有点像</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-55"></a><span class="p">str=</span><span class="s2">"apple, tree, apple tree"</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-56"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/apple/APPLE</span><span class="si">}</span><span class="p">   # 替换第一次出现的apple</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-57"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">//apple/APPLE</span><span class="si">}</span><span class="p">  # 替换所有apple</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-58"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/#apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple开头，则用APPLE替换它</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-59"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/%apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple结尾，则用APPLE替换它</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-60"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-61"></a><span class="p">/// 比较</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-62"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> == a* ]]        # 逻辑真 (pattern matching)</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-63"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> =~ .*</span><span class="se">\.</span><span class="nv">txt</span><span class="p"> ]]   # 逻辑真 (regex matching)</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-64"></a><span class="p">[[ </span><span class="s2">"abc"</span><span class="p"> == </span><span class="s2">"abc"</span><span class="p"> ]]       # 逻辑真 (string comparision)</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-65"></a><span class="p">[[ </span><span class="s2">"11"</span><span class="p"> &lt; </span><span class="s2">"2"</span><span class="p"> ]]           # 逻辑真 (string comparision), 按ascii值比较</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-66"></a>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-67"></a><span class="p">/// 字符串删除</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-68"></a>$<span class="p"> test=</span><span class="s1">'c:/windows/boot.ini'</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-69"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-70"></a><span class="p">c:/windows/boot.ini</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-71"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-72"></a><span class="p">windows/boot.ini</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-73"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-74"></a><span class="p">boot.ini</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-75"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-76"></a><span class="p">c:/windows</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-77"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-78"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">#substring正则表达式</span><span class="si">}</span><span class="nv">从字符串开头开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-79"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">%substring正则表达式</span><span class="si">}</span><span class="nv">从字符串结尾开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_0fa89ea465ae4e0f88615c73f95279ae-80"></a><span class="p">#注意：</span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p">,</span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"> 分别是得到文件名，或者目录地址最简单方法。</span>
 </pre>
 </div>
 <div class="section" id="id1">
@@ -304,6 +304,13 @@ for var in ${filename[@]};do
     echo $var
 done
 </pre>
+</div>
+<div class="section" id="id2">
+<h2>参考资料</h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://justcoding.iteye.com/blog/1963463">linux shell 字符串操作详解 （长度，读取，替换，截取，连接，对比，删除，位置 ）</a></li>
+<li><a class="reference external" href="http://snailwarrior.blog.51cto.com/680306/154704">BASH 数组用法小结</a></li>
+</ol>
 </div>
 </div>
         </div>

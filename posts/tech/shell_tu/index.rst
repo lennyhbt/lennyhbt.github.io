@@ -165,3 +165,9 @@ shell字符串操作
     for var in ${filename[@]};do
         echo $var
     done
+
+参考资料
+===========
+#. `linux shell 字符串操作详解 （长度，读取，替换，截取，连接，对比，删除，位置 ） <http://justcoding.iteye.com/blog/1963463>`_
+#. `BASH 数组用法小结 <http://snailwarrior.blog.51cto.com/680306/154704>`_
+
