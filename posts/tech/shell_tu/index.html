@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns#
+article: http://ogp.me/ns/article#
+" lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shell脚本常用操作入门 | v2h</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="http://qytz.github.io/posts/tech/shell_tu/">
+<!--[if lt IE 9]>
+            <script src="../../../assets/js/html5shiv.min.js"></script>
+            <script src="../../../assets/js/respond.min.js"></script>
+        <![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/tipuesearch.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/chinese.css">
+<meta name="author" content="lennyh">
+<link rel="prev" href="../../tian-jin-jian-wen-qi-yi-lu/" title="天津见闻奇异录" type="text/html">
+<meta property="og:site_name" content="v2h">
+<meta property="og:title" content="shell脚本常用操作入门">
+<meta property="og:url" content="http://qytz.github.io/posts/tech/shell_tu/">
+<meta property="og:description" content="shell字符串操作
+判断读取字符串值
+
+
+
+
+
+
+
+表达式
+含义
+
+
+
+${var}
+变量var的值, 与$var相同
+
+${var-DEFAULT}
+如果var没有被声明, 那么就以$DEFAULT作为其值 *
+
+${var:-DEFAULT}
+如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *
+
+${var=DEFAULT}
+如果var没有被声明, 那么就以$DEF">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-08-23T14:45:00+08:00">
+<meta property="article:tag" content="shell">
+<meta property="article:tag" content="tech">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar  header-panel shadow-z-3" role="navigation"><div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-3">
+                    
+<span class="navbar-form pull-left">
+<input type="text" class="form-control" placeholder="Search" id="tipue_search_input"></span>
+            <h1 class="title-blog">
+                <a href="http://qytz.github.io/">
+                        <span id="blog-title">v2h</span>
+                    </a>
+            </h1>
+          </div>
+        </div>
+      </div>
+<!-- /.container-fluid -->
+</nav><div class="container-fluid main" id="content" role="main">
+        <div class="row">
+            <nav class="col-xs-3 menu"><ul>
+<li class="withripple"><a href="../../../archive.html">文章存档</a></li>
+                <li class="withripple"><a href="../../../categories/">标签</a></li>
+                <li class="withripple"><a href="../../../rss.xml">RSS feed</a></li>
+                <li class="withripple"><a href="../../../stories/aboutme/">关于</a></li>
+                <li class="withripple"><a href="../../../stories/h-project/">H Project</a></li>
+                <li class="withripple"><a href="../../../stories/readinglist/">阅读列表</a></li>
+
+                    
+                </ul>
+<ul class="nav navbar-nav"></ul></nav><div class="posts-material col-xs-9">
+                <div class="col-xs-12 col-md-11 content-material">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">shell脚本常用操作入门</a></h1>
+<hr>
+<div class="metadata">
+            <span class="byline author vcard">
+                <a href=".">
+                        <i class="mdi-action-face-unlock"></i>
+                    lennyh
+                </a>
+            </span>
+            <span class="dateline">
+                <a href="." rel="bookmark"><i class="mdi-device-access-time"></i>
+                    <time class="published dt-published" datetime="2016-08-23T14:45:00+08:00" itemprop="datePublished" title="2016-08-23 14:45">2016-08-23 14:45</time></a>
+            </span>
+                <span class="commentline">            <a href="#disqus_thread" data-disqus-identifier="cache/posts/tech/shell-ru-men.html">Comments</a>
+
+</span>
+        </div>
+        
+        <hr></header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="shell">
+<h2>shell字符串操作</h2>
+<p>判断读取字符串值</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%">
+<col width="80%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">表达式</th>
+<th class="head">含义</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td>${var}</td>
+<td>变量var的值, 与$var相同</td>
+</tr>
+<tr>
+<td>${var-DEFAULT}</td>
+<td>如果var没有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:-DEFAULT}</td>
+<td>如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var=DEFAULT}</td>
+<td>如果var没有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:=DEFAULT}</td>
+<td>如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var+OTHER}</td>
+<td>如果var声明了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var:+OTHER}</td>
+<td>如果var被设置了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var?ERR_MSG}</td>
+<td>如果var没被声明, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${var:?ERR_MSG}</td>
+<td>如果var没被设置, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${!varprefix*}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+<tr>
+<td>${!varprefix@}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>字符串操作（长度，读取，替换）</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%">
+<col width="64%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">表达式</th>
+<th class="head">含义</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td>${#string}</td>
+<td>$string的长度</td>
+</tr>
+<tr>
+<td>${string:position}</td>
+<td>在$string中, 从位置$position开始提取子串</td>
+</tr>
+<tr>
+<td>${string:position:length}</td>
+<td>在$string中, 从位置$position开始提取长度为$length的子串</td>
+</tr>
+<tr>
+<td>${string#substring}</td>
+<td>从变量$string的开头, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string##substring}</td>
+<td>从变量$string的开头, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%substring}</td>
+<td>从变量$string的结尾, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%%substring}</td>
+<td>从变量$string的结尾, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string/substring/replacement}</td>
+<td>使用$replacement, 来代替第一个匹配的$substring</td>
+</tr>
+<tr>
+<td>${string//substring/replacement}</td>
+<td>使用$replacement, 代替所有匹配的$substring</td>
+</tr>
+<tr>
+<td>${string/#substring/replacement}</td>
+<td>如果$string的前缀匹配$substring,
+那么就用$replacement来代替匹配到的$substring</td>
+</tr>
+<tr>
+<td>${string/%substring/replacement}</td>
+<td>如果$string的后缀匹配$substring,</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>举例</p>
+<pre class="code shell"><a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-1"></a>/// 取得字符串长度
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-2"></a><span class="nv">string</span><span class="o">=</span>abc12342341          //等号二边不要有空格
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-3"></a><span class="nb">echo</span> <span class="si">${#</span><span class="nv">string</span><span class="si">}</span>             //结果11
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-4"></a>expr length <span class="nv">$string</span>         //结果11
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-5"></a>expr <span class="s2">"</span><span class="nv">$string</span><span class="s2">"</span> : <span class="s2">".*"</span>       //结果11 冒号二边要有空格,这里的:根match的用法差不多
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-6"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-7"></a>/// 字符串所在位置
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-8"></a>expr index <span class="nv">$string</span> <span class="s1">'123'</span>    //结果4 字符串对应的下标是从1开始的
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-9"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abc"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-10"></a>expr index <span class="nv">$str</span> <span class="s2">"b"</span>  <span class="c1"># 2</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-11"></a>expr index <span class="nv">$str</span> <span class="s2">"x"</span>  <span class="c1"># 0</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-12"></a>expr index <span class="nv">$str</span> <span class="s2">""</span>   <span class="c1"># 0</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-13"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-14"></a>/// 字符串截取
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-15"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span>      //2342341  从第4位开始截取后面所有字符串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-16"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">3</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>    //123423   从第3位开始截取后面6位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-17"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">: -4</span><span class="si">}</span>    //2341  :右边有空格   截取后4位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-18"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:(-4)</span><span class="si">}</span>   //2341  同上
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-19"></a>expr substr <span class="nv">$string</span> <span class="m">3</span> <span class="m">3</span>   //123  从第3位开始截取后面3位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-20"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abcdef"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-21"></a>expr substr <span class="s2">"</span><span class="nv">$str</span><span class="s2">"</span> <span class="m">4</span> <span class="m">5</span>  <span class="c1"># 从第四个位置开始取5个字符， def</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-22"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-6):</span><span class="nv">5</span><span class="si">}</span>        <span class="c1"># 从倒数第二个位置向左提取字符串, abcde</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-23"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-4):</span><span class="nv">3</span><span class="si">}</span>      <span class="c1"># 从倒数第二个位置向左提取6个字符, cde</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-24"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-25"></a>/// 匹配显示内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-26"></a>expr match <span class="nv">$string</span> <span class="s1">'\([a-c]*[0-9]*\)'</span>  //abc12342341
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-27"></a>expr <span class="nv">$string</span> : <span class="s1">'\([a-c]*[0-9]\)'</span>       //abc1
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-28"></a>expr <span class="nv">$string</span> : <span class="s1">'.*\([0-9][0-9][0-9]\)'</span> //341 显示括号中匹配的内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-29"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-30"></a>/// 截取不匹配的内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-31"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#a*3</span><span class="si">}</span>     //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-32"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#c*3</span><span class="si">}</span>     //abc12342341  这样什么也没有匹配到
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-33"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#*c1*3</span><span class="si">}</span>   //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-34"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">##a*3</span><span class="si">}</span>    //41     从<span class="nv">$string</span>左边开始，去掉最长匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-35"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%3*1</span><span class="si">}</span>     //abc12342  从<span class="nv">$string</span>右边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-36"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%%3*1</span><span class="si">}</span>    //abc12     从<span class="nv">$string</span>右边开始，去掉最长匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-37"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abbc,def,ghi,abcjkl"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-38"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#a*c</span><span class="si">}</span>     <span class="c1"># 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-39"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##a*c</span><span class="si">}</span>    <span class="c1"># 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-40"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#</span><span class="s2">"a*c"</span><span class="si">}</span>   <span class="c1"># 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-41"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##</span><span class="s2">"a*c"</span><span class="si">}</span>  <span class="c1"># 输出abbc,def,ghi,abcjkl 同理</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-42"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#*a*c*</span><span class="si">}</span>   <span class="c1"># 空</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-43"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##*a*c*</span><span class="si">}</span>  <span class="c1"># 空</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-44"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#d*f)     # 输出abbc,def,ghi,abcjkl,</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-45"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">#*d*f</span><span class="si">}</span><span class="p">    # 输出,ghi,abcjkl</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-46"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*l</span><span class="si">}</span><span class="p">     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-47"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%%b*l</span><span class="si">}</span><span class="p">    # a             两个百分号表示(%%)表示从右边截取最长的匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-48"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*c</span><span class="si">}</span><span class="p">     # abbc,def,ghi,abcjkl</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-49"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-50"></a><span class="p">/// 匹配并且替换</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-51"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/23/bb</span><span class="si">}</span><span class="p">   //abc1bb42341  替换一次</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-52"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">//23/bb</span><span class="si">}</span><span class="p">  //abc1bb4bb41  双斜杠替换所有匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-53"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/#abc/bb</span><span class="si">}</span><span class="p"> //bb12342341   #以什么开头来匹配，根php中的^有点像</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-54"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/%41/bb</span><span class="si">}</span><span class="p">  //abc123423bb  %以什么结尾来匹配，根php中的</span>$<span class="nv">有点像</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-55"></a><span class="p">str=</span><span class="s2">"apple, tree, apple tree"</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-56"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/apple/APPLE</span><span class="si">}</span><span class="p">   # 替换第一次出现的apple</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-57"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">//apple/APPLE</span><span class="si">}</span><span class="p">  # 替换所有apple</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-58"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/#apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple开头，则用APPLE替换它</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-59"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/%apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple结尾，则用APPLE替换它</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-60"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-61"></a><span class="p">/// 比较</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-62"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> == a* ]]        # 逻辑真 (pattern matching)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-63"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> =~ .*</span><span class="se">\.</span><span class="nv">txt</span><span class="p"> ]]   # 逻辑真 (regex matching)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-64"></a><span class="p">[[ </span><span class="s2">"abc"</span><span class="p"> == </span><span class="s2">"abc"</span><span class="p"> ]]       # 逻辑真 (string comparision)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-65"></a><span class="p">[[ </span><span class="s2">"11"</span><span class="p"> &lt; </span><span class="s2">"2"</span><span class="p"> ]]           # 逻辑真 (string comparision), 按ascii值比较</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-66"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-67"></a><span class="p">/// 字符串删除</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-68"></a>$<span class="p"> test=</span><span class="s1">'c:/windows/boot.ini'</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-69"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-70"></a><span class="p">c:/windows/boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-71"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-72"></a><span class="p">windows/boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-73"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-74"></a><span class="p">boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-75"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-76"></a><span class="p">c:/windows</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-77"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-78"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">#substring正则表达式</span><span class="si">}</span><span class="nv">从字符串开头开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-79"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">%substring正则表达式</span><span class="si">}</span><span class="nv">从字符串结尾开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-80"></a><span class="p">#注意：</span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p">,</span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"> 分别是得到文件名，或者目录地址最简单方法。</span>
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>数组操作</h2>
+<p>声明一个数组:</p>
+<pre class="literal-block">
+declare -a array
+</pre>
+<p>数组赋值:</p>
+<pre class="literal-block">
+A. array=(var1 var2 var3 ... varN)
+B. array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)
+C. array[0]=var1
+   arrya[1]=var2
+   ...
+   array[n]=varN
+D. ARRAY=()
+   ARRAY+=('foo')
+   ARRAY+=('bar')
+</pre>
+<p>计算数组元素个数:</p>
+<pre class="literal-block">
+${#array[@]}  或者  ${#array[*]}
+</pre>
+<p>引用数组:</p>
+<pre class="literal-block">
+echo ${array[n]}
+</pre>
+<p>遍历数组:</p>
+<pre class="literal-block">
+filename=(`ls`)
+for var in ${filename[@]};do
+    echo $var
+done
+</pre>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><div itemprop="keywords" class="tags">
+            <a class="tag p-category btn btn-success btn-raised btn-sm" href="../../../categories/shell/" rel="tag">shell</a>
+            <a class="tag p-category btn btn-success btn-raised btn-sm" href="../../../categories/tech/" rel="tag">tech</a>
+        </div>
+
+            <ul class="pager">
+<li class="previous">
+                <a href="../../tian-jin-jian-wen-qi-yi-lu/" rel="prev" title="天津见闻奇异录">前一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments"><h2>
+<i class="mdi-communication-forum"></i>注释</h2>
+        <hr>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="v2h",
+            disqus_url="http://qytz.github.io/posts/tech/shell_tu/",
+        disqus_title="shell\u811a\u672c\u5e38\u7528\u64cd\u4f5c\u5165\u95e8",
+        disqus_identifier="cache/posts/tech/shell-ru-men.html",
+        disqus_config = function () {
+            this.language = "zh_cn";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="v2h";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+            </div>
+        </div>
+        <button class="btn btn-fab btn-raised btn-material-green btn-footer" data-toggle="modal" data-target="#footer-dialog">
+            <i class="mdi-communication-message"></i>
+        </button>
+        <div id="footer-dialog" class="modal fade" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">v2h credits</h4>
+ 
+              </div>
+              <div class="modal-body">
+                    Contents © 2016         <a href="mailto:hhhhhf@foxmail.com">lennyh</a> | <a href="https://github.com/qytz">lennyh</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+<br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+                    
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="source-button">
+    <a class="btn btn-fab btn-raised btn-material-indigo" target="_blank" href="index.rst" title="源代码">
+        <i class="mdi-file-cloud-download"></i>
+    </a>
+
+        </div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><script src="../../../assets/js/colorbox-i18n/jquery.colorbox-zh-CN.js"></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["weixin","tsina","sqq","qzone","douban","tieba","hx","youdao","fbook","twi","linkedin","mail","copy","print"],"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script><script>
+
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+
+            $(window).on("resize", function() {
+                $("html, body").height($(window).height());
+                $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight() - 76 ); // footer margin: $("footer.footer").outerHeight()
+                $(".posts-material").height($(window).height());
+            }).trigger("resize");
+        </script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-cn");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><!-- Modal --><div id="search-results" class="modal fade" role="dialog" style="height: 80%;">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h4 class="modal-title">Search Results:</h4>
+      </div>
+      <div class="modal-body" id="tipue_search_content" style="max-height: 600px; overflow-y: auto;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+    $.when(
+        $.getScript( "/assets/js/tipuesearch_set.js" ),
+        $.getScript( "/assets/js/tipuesearch.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+    ).done(function() {
+        $('#tipue_search_input').tipuesearch({
+            'mode': 'json',
+            'contentLocation': '/assets/js/tipuesearch_content.json'
+        });
+        $('#tipue_search_input').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $('#search-results').modal()
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

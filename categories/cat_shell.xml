@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0"><channel><title>v2h (shell)</title><link>http://qytz.github.io/</link><description></description><atom:link rel="self" href="http://qytz.github.io/categories/cat_shell.xml" type="application/rss+xml"></atom:link><language>zh_cn</language><lastBuildDate>Tue, 23 Aug 2016 07:32:19 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>shell脚本常用操作入门</title><link>http://qytz.github.io/posts/tech/shell_tu/</link><dc:creator>lennyh</dc:creator><description>&lt;div&gt;&lt;div class="section" id="shell"&gt;
+&lt;h2&gt;shell字符串操作&lt;/h2&gt;
+&lt;p&gt;判断读取字符串值&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="20%"&gt;
+&lt;col width="80%"&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;表达式&lt;/th&gt;
+&lt;th class="head"&gt;含义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;${var}&lt;/td&gt;
+&lt;td&gt;变量var的值, 与$var相同&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var-DEFAULT}&lt;/td&gt;
+&lt;td&gt;如果var没有被声明, 那么就以$DEFAULT作为其值 *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var:-DEFAULT}&lt;/td&gt;
+&lt;td&gt;如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var=DEFAULT}&lt;/td&gt;
+&lt;td&gt;如果var没有被声明, 那么就以$DEFAULT作为其值 *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var:=DEFAULT}&lt;/td&gt;
+&lt;td&gt;如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var+OTHER}&lt;/td&gt;
+&lt;td&gt;如果var声明了, 那么其值就是$OTHER, 否则就为null字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var:+OTHER}&lt;/td&gt;
+&lt;td&gt;如果var被设置了, 那么其值就是$OTHER, 否则就为null字符串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var?ERR_MSG}&lt;/td&gt;
+&lt;td&gt;如果var没被声明, 那么就打印$ERR_MSG *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${var:?ERR_MSG}&lt;/td&gt;
+&lt;td&gt;如果var没被设置, 那么就打印$ERR_MSG *&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${!varprefix*}&lt;/td&gt;
+&lt;td&gt;匹配之前所有以varprefix开头进行声明的变量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${!varprefix@}&lt;/td&gt;
+&lt;td&gt;匹配之前所有以varprefix开头进行声明的变量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;字符串操作（长度，读取，替换）&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;table border="1" class="docutils"&gt;
+&lt;colgroup&gt;
+&lt;col width="36%"&gt;
+&lt;col width="64%"&gt;
+&lt;/colgroup&gt;
+&lt;thead valign="bottom"&gt;
+&lt;tr&gt;&lt;th class="head"&gt;表达式&lt;/th&gt;
+&lt;th class="head"&gt;含义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td&gt;${#string}&lt;/td&gt;
+&lt;td&gt;$string的长度&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string:position}&lt;/td&gt;
+&lt;td&gt;在$string中, 从位置$position开始提取子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string:position:length}&lt;/td&gt;
+&lt;td&gt;在$string中, 从位置$position开始提取长度为$length的子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string#substring}&lt;/td&gt;
+&lt;td&gt;从变量$string的开头, 删除最短匹配$substring的子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string##substring}&lt;/td&gt;
+&lt;td&gt;从变量$string的开头, 删除最长匹配$substring的子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string%substring}&lt;/td&gt;
+&lt;td&gt;从变量$string的结尾, 删除最短匹配$substring的子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string%%substring}&lt;/td&gt;
+&lt;td&gt;从变量$string的结尾, 删除最长匹配$substring的子串&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string/substring/replacement}&lt;/td&gt;
+&lt;td&gt;使用$replacement, 来代替第一个匹配的$substring&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string//substring/replacement}&lt;/td&gt;
+&lt;td&gt;使用$replacement, 代替所有匹配的$substring&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string/#substring/replacement}&lt;/td&gt;
+&lt;td&gt;如果$string的前缀匹配$substring,
+那么就用$replacement来代替匹配到的$substring&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;${string/%substring/replacement}&lt;/td&gt;
+&lt;td&gt;如果$string的后缀匹配$substring,&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;举例&lt;/p&gt;
+&lt;pre class="code shell"&gt;&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-1"&gt;&lt;/a&gt;/// 取得字符串长度
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-2"&gt;&lt;/a&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;abc12342341          //等号二边不要有空格
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-3"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${#&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;             //结果11
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-4"&gt;&lt;/a&gt;expr length &lt;span class="nv"&gt;$string&lt;/span&gt;         //结果11
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-5"&gt;&lt;/a&gt;expr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$string&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; : &lt;span class="s2"&gt;".*"&lt;/span&gt;       //结果11 冒号二边要有空格,这里的:根match的用法差不多
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-6"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-7"&gt;&lt;/a&gt;/// 字符串所在位置
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-8"&gt;&lt;/a&gt;expr index &lt;span class="nv"&gt;$string&lt;/span&gt; &lt;span class="s1"&gt;'123'&lt;/span&gt;    //结果4 字符串对应的下标是从1开始的
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-9"&gt;&lt;/a&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"abc"&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-10"&gt;&lt;/a&gt;expr index &lt;span class="nv"&gt;$str&lt;/span&gt; &lt;span class="s2"&gt;"b"&lt;/span&gt;  &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-11"&gt;&lt;/a&gt;expr index &lt;span class="nv"&gt;$str&lt;/span&gt; &lt;span class="s2"&gt;"x"&lt;/span&gt;  &lt;span class="c1"&gt;# 0&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-12"&gt;&lt;/a&gt;expr index &lt;span class="nv"&gt;$str&lt;/span&gt; &lt;span class="s2"&gt;""&lt;/span&gt;   &lt;span class="c1"&gt;# 0&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-13"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-14"&gt;&lt;/a&gt;/// 字符串截取
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-15"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;4&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;      //2342341  从第4位开始截取后面所有字符串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-16"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;3&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;6&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;    //123423   从第3位开始截取后面6位
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-17"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;: -4&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;    //2341  :右边有空格   截取后4位
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-18"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;:(-4)&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;   //2341  同上
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-19"&gt;&lt;/a&gt;expr substr &lt;span class="nv"&gt;$string&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;   //123  从第3位开始截取后面3位
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-20"&gt;&lt;/a&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"abcdef"&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-21"&gt;&lt;/a&gt;expr substr &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$str&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt; &lt;span class="m"&gt;5&lt;/span&gt;  &lt;span class="c1"&gt;# 从第四个位置开始取5个字符， def&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-22"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:(-6):&lt;/span&gt;&lt;span class="nv"&gt;5&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;        &lt;span class="c1"&gt;# 从倒数第二个位置向左提取字符串, abcde&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-23"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;:(-4):&lt;/span&gt;&lt;span class="nv"&gt;3&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;      &lt;span class="c1"&gt;# 从倒数第二个位置向左提取6个字符, cde&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-24"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-25"&gt;&lt;/a&gt;/// 匹配显示内容
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-26"&gt;&lt;/a&gt;expr match &lt;span class="nv"&gt;$string&lt;/span&gt; &lt;span class="s1"&gt;'\([a-c]*[0-9]*\)'&lt;/span&gt;  //abc12342341
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-27"&gt;&lt;/a&gt;expr &lt;span class="nv"&gt;$string&lt;/span&gt; : &lt;span class="s1"&gt;'\([a-c]*[0-9]\)'&lt;/span&gt;       //abc1
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-28"&gt;&lt;/a&gt;expr &lt;span class="nv"&gt;$string&lt;/span&gt; : &lt;span class="s1"&gt;'.*\([0-9][0-9][0-9]\)'&lt;/span&gt; //341 显示括号中匹配的内容
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-29"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-30"&gt;&lt;/a&gt;/// 截取不匹配的内容
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-31"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;#a*3&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;     //42341  从&lt;span class="nv"&gt;$string&lt;/span&gt;左边开始，去掉最短匹配子串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-32"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;#c*3&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;     //abc12342341  这样什么也没有匹配到
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-33"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;#*c1*3&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;   //42341  从&lt;span class="nv"&gt;$string&lt;/span&gt;左边开始，去掉最短匹配子串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-34"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;##a*3&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;    //41     从&lt;span class="nv"&gt;$string&lt;/span&gt;左边开始，去掉最长匹配子串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-35"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;%3*1&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;     //abc12342  从&lt;span class="nv"&gt;$string&lt;/span&gt;右边开始，去掉最短匹配子串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-36"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;%%3*1&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;    //abc12     从&lt;span class="nv"&gt;$string&lt;/span&gt;右边开始，去掉最长匹配子串
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-37"&gt;&lt;/a&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;"abbc,def,ghi,abcjkl"&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-38"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;#a*c&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;     &lt;span class="c1"&gt;# 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-39"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;##a*c&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;    &lt;span class="c1"&gt;# 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-40"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="s2"&gt;"a*c"&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;   &lt;span class="c1"&gt;# 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-41"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;##&lt;/span&gt;&lt;span class="s2"&gt;"a*c"&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;  &lt;span class="c1"&gt;# 输出abbc,def,ghi,abcjkl 同理&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-42"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;#*a*c*&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;   &lt;span class="c1"&gt;# 空&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-43"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;##*a*c*&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;  &lt;span class="c1"&gt;# 空&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-44"&gt;&lt;/a&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;#d*f)     # 输出abbc,def,ghi,abcjkl,&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-45"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;#*d*f&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;    # 输出,ghi,abcjkl&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-46"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;%a*l&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-47"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;%%b*l&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;    # a             两个百分号表示(%%)表示从右边截取最长的匹配&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-48"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;%a*c&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;     # abbc,def,ghi,abcjkl&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-49"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-50"&gt;&lt;/a&gt;&lt;span class="p"&gt;/// 匹配并且替换&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-51"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;/23/bb&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;   //abc1bb42341  替换一次&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-52"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;//23/bb&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;  //abc1bb4bb41  双斜杠替换所有匹配&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-53"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;/#abc/bb&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt; //bb12342341   #以什么开头来匹配，根php中的^有点像&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-54"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;string&lt;/span&gt;&lt;span class="p"&gt;/%41/bb&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;  //abc123423bb  %以什么结尾来匹配，根php中的&lt;/span&gt;$&lt;span class="nv"&gt;有点像&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-55"&gt;&lt;/a&gt;&lt;span class="p"&gt;str=&lt;/span&gt;&lt;span class="s2"&gt;"apple, tree, apple tree"&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-56"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;/apple/APPLE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;   # 替换第一次出现的apple&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-57"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;//apple/APPLE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;  # 替换所有apple&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-58"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;/#apple/APPLE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;  # 如果字符串str以apple开头，则用APPLE替换它&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-59"&gt;&lt;/a&gt;&lt;span class="p"&gt;echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;str&lt;/span&gt;&lt;span class="p"&gt;/%apple/APPLE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;  # 如果字符串str以apple结尾，则用APPLE替换它&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-60"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-61"&gt;&lt;/a&gt;&lt;span class="p"&gt;/// 比较&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-62"&gt;&lt;/a&gt;&lt;span class="p"&gt;[[ &lt;/span&gt;&lt;span class="s2"&gt;"a.txt"&lt;/span&gt;&lt;span class="p"&gt; == a* ]]        # 逻辑真 (pattern matching)&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-63"&gt;&lt;/a&gt;&lt;span class="p"&gt;[[ &lt;/span&gt;&lt;span class="s2"&gt;"a.txt"&lt;/span&gt;&lt;span class="p"&gt; =~ .*&lt;/span&gt;&lt;span class="se"&gt;\.&lt;/span&gt;&lt;span class="nv"&gt;txt&lt;/span&gt;&lt;span class="p"&gt; ]]   # 逻辑真 (regex matching)&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-64"&gt;&lt;/a&gt;&lt;span class="p"&gt;[[ &lt;/span&gt;&lt;span class="s2"&gt;"abc"&lt;/span&gt;&lt;span class="p"&gt; == &lt;/span&gt;&lt;span class="s2"&gt;"abc"&lt;/span&gt;&lt;span class="p"&gt; ]]       # 逻辑真 (string comparision)&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-65"&gt;&lt;/a&gt;&lt;span class="p"&gt;[[ &lt;/span&gt;&lt;span class="s2"&gt;"11"&lt;/span&gt;&lt;span class="p"&gt; &amp;lt; &lt;/span&gt;&lt;span class="s2"&gt;"2"&lt;/span&gt;&lt;span class="p"&gt; ]]           # 逻辑真 (string comparision), 按ascii值比较&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-66"&gt;&lt;/a&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-67"&gt;&lt;/a&gt;&lt;span class="p"&gt;/// 字符串删除&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-68"&gt;&lt;/a&gt;$&lt;span class="p"&gt; test=&lt;/span&gt;&lt;span class="s1"&gt;'c:/windows/boot.ini'&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-69"&gt;&lt;/a&gt;$&lt;span class="p"&gt; echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;#/&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-70"&gt;&lt;/a&gt;&lt;span class="p"&gt;c:/windows/boot.ini&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-71"&gt;&lt;/a&gt;$&lt;span class="p"&gt; echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;#*/&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-72"&gt;&lt;/a&gt;&lt;span class="p"&gt;windows/boot.ini&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-73"&gt;&lt;/a&gt;$&lt;span class="p"&gt; echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;##*/&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-74"&gt;&lt;/a&gt;&lt;span class="p"&gt;boot.ini&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-75"&gt;&lt;/a&gt;$&lt;span class="p"&gt; echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;%/*&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-76"&gt;&lt;/a&gt;&lt;span class="p"&gt;c:/windows&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-77"&gt;&lt;/a&gt;$&lt;span class="p"&gt; echo &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;%%/*&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-78"&gt;&lt;/a&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;变量名&lt;/span&gt;&lt;span class="p"&gt;#substring正则表达式&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="nv"&gt;从字符串开头开始配备substring&lt;/span&gt;&lt;span class="p"&gt;,删除匹配上的表达式。&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-79"&gt;&lt;/a&gt;&lt;span class="p"&gt;#&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;变量名&lt;/span&gt;&lt;span class="p"&gt;%substring正则表达式&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="nv"&gt;从字符串结尾开始配备substring&lt;/span&gt;&lt;span class="p"&gt;,删除匹配上的表达式。&lt;/span&gt;
+&lt;a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-80"&gt;&lt;/a&gt;&lt;span class="p"&gt;#注意：&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;##*/&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;test&lt;/span&gt;&lt;span class="p"&gt;%/*&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="p"&gt; 分别是得到文件名，或者目录地址最简单方法。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class="section" id="id1"&gt;
+&lt;h2&gt;数组操作&lt;/h2&gt;
+&lt;p&gt;声明一个数组:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+declare -a array
+&lt;/pre&gt;
+&lt;p&gt;数组赋值:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+A. array=(var1 var2 var3 ... varN)
+B. array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)
+C. array[0]=var1
+   arrya[1]=var2
+   ...
+   array[n]=varN
+D. ARRAY=()
+   ARRAY+=('foo')
+   ARRAY+=('bar')
+&lt;/pre&gt;
+&lt;p&gt;计算数组元素个数:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+${#array[@]}  或者  ${#array[*]}
+&lt;/pre&gt;
+&lt;p&gt;引用数组:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+echo ${array[n]}
+&lt;/pre&gt;
+&lt;p&gt;遍历数组:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+filename=(`ls`)
+for var in ${filename[@]};do
+    echo $var
+done
+&lt;/pre&gt;
+&lt;/div&gt;&lt;/div&gt;</description><category>shell</category><category>tech</category><guid>http://qytz.github.io/posts/tech/shell_tu/</guid><pubDate>Tue, 23 Aug 2016 06:45:00 GMT</pubDate></item></channel></rss>

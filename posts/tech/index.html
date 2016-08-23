@@ -53,7 +53,261 @@ article: http://ogp.me/ns/article#
                 <div class="col-xs-12 col-md-11 content-material">
 
     <div class="postindex well post-material ">
-        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="system_security_thought/" class="u-url">系统安全的思考</a></h1>
+        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="shell_tu/" class="u-url">shell脚本常用操作入门</a></h1>
+            <div class="metadata">
+                <span class="byline author vcard">
+                        <i class="mdi-action-face-unlock"></i>
+                    lennyh
+                </span>
+                <span class="dateline"><a href="shell_tu/" rel="bookmark">
+                    <i class="mdi-device-access-time"></i><time class="published dt-published" datetime="2016-08-23T14:45:00+08:00" title="2016-08-23 14:45">2016-08-23 14:45</time></a></span>
+                    <span class="commentline">            <a href="shell_tu/#disqus_thread" data-disqus-identifier="cache/posts/tech/shell-ru-men.html">Comments</a>
+
+</span>
+            </div>
+            <hr></header><div class="e-content entry-content">
+        <div>
+<div class="section" id="shell">
+<h2>shell字符串操作</h2>
+<p>判断读取字符串值</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%">
+<col width="80%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">表达式</th>
+<th class="head">含义</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td>${var}</td>
+<td>变量var的值, 与$var相同</td>
+</tr>
+<tr>
+<td>${var-DEFAULT}</td>
+<td>如果var没有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:-DEFAULT}</td>
+<td>如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var=DEFAULT}</td>
+<td>如果var没有被声明, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var:=DEFAULT}</td>
+<td>如果var没有被声明, 或者其值为空, 那么就以$DEFAULT作为其值 *</td>
+</tr>
+<tr>
+<td>${var+OTHER}</td>
+<td>如果var声明了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var:+OTHER}</td>
+<td>如果var被设置了, 那么其值就是$OTHER, 否则就为null字符串</td>
+</tr>
+<tr>
+<td>${var?ERR_MSG}</td>
+<td>如果var没被声明, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${var:?ERR_MSG}</td>
+<td>如果var没被设置, 那么就打印$ERR_MSG *</td>
+</tr>
+<tr>
+<td>${!varprefix*}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+<tr>
+<td>${!varprefix@}</td>
+<td>匹配之前所有以varprefix开头进行声明的变量</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>字符串操作（长度，读取，替换）</p>
+<blockquote>
+<table border="1" class="docutils">
+<colgroup>
+<col width="36%">
+<col width="64%">
+</colgroup>
+<thead valign="bottom"><tr>
+<th class="head">表达式</th>
+<th class="head">含义</th>
+</tr></thead>
+<tbody valign="top">
+<tr>
+<td>${#string}</td>
+<td>$string的长度</td>
+</tr>
+<tr>
+<td>${string:position}</td>
+<td>在$string中, 从位置$position开始提取子串</td>
+</tr>
+<tr>
+<td>${string:position:length}</td>
+<td>在$string中, 从位置$position开始提取长度为$length的子串</td>
+</tr>
+<tr>
+<td>${string#substring}</td>
+<td>从变量$string的开头, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string##substring}</td>
+<td>从变量$string的开头, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%substring}</td>
+<td>从变量$string的结尾, 删除最短匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string%%substring}</td>
+<td>从变量$string的结尾, 删除最长匹配$substring的子串</td>
+</tr>
+<tr>
+<td>${string/substring/replacement}</td>
+<td>使用$replacement, 来代替第一个匹配的$substring</td>
+</tr>
+<tr>
+<td>${string//substring/replacement}</td>
+<td>使用$replacement, 代替所有匹配的$substring</td>
+</tr>
+<tr>
+<td>${string/#substring/replacement}</td>
+<td>如果$string的前缀匹配$substring,
+那么就用$replacement来代替匹配到的$substring</td>
+</tr>
+<tr>
+<td>${string/%substring/replacement}</td>
+<td>如果$string的后缀匹配$substring,</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>举例</p>
+<pre class="code shell"><a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-1"></a>/// 取得字符串长度
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-2"></a><span class="nv">string</span><span class="o">=</span>abc12342341          //等号二边不要有空格
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-3"></a><span class="nb">echo</span> <span class="si">${#</span><span class="nv">string</span><span class="si">}</span>             //结果11
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-4"></a>expr length <span class="nv">$string</span>         //结果11
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-5"></a>expr <span class="s2">"</span><span class="nv">$string</span><span class="s2">"</span> : <span class="s2">".*"</span>       //结果11 冒号二边要有空格,这里的:根match的用法差不多
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-6"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-7"></a>/// 字符串所在位置
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-8"></a>expr index <span class="nv">$string</span> <span class="s1">'123'</span>    //结果4 字符串对应的下标是从1开始的
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-9"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abc"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-10"></a>expr index <span class="nv">$str</span> <span class="s2">"b"</span>  <span class="c1"># 2</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-11"></a>expr index <span class="nv">$str</span> <span class="s2">"x"</span>  <span class="c1"># 0</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-12"></a>expr index <span class="nv">$str</span> <span class="s2">""</span>   <span class="c1"># 0</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-13"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-14"></a>/// 字符串截取
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-15"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span>      //2342341  从第4位开始截取后面所有字符串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-16"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:</span><span class="nv">3</span><span class="p">:</span><span class="nv">6</span><span class="si">}</span>    //123423   从第3位开始截取后面6位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-17"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">: -4</span><span class="si">}</span>    //2341  :右边有空格   截取后4位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-18"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">:(-4)</span><span class="si">}</span>   //2341  同上
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-19"></a>expr substr <span class="nv">$string</span> <span class="m">3</span> <span class="m">3</span>   //123  从第3位开始截取后面3位
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-20"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abcdef"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-21"></a>expr substr <span class="s2">"</span><span class="nv">$str</span><span class="s2">"</span> <span class="m">4</span> <span class="m">5</span>  <span class="c1"># 从第四个位置开始取5个字符， def</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-22"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-6):</span><span class="nv">5</span><span class="si">}</span>        <span class="c1"># 从倒数第二个位置向左提取字符串, abcde</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-23"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">:(-4):</span><span class="nv">3</span><span class="si">}</span>      <span class="c1"># 从倒数第二个位置向左提取6个字符, cde</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-24"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-25"></a>/// 匹配显示内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-26"></a>expr match <span class="nv">$string</span> <span class="s1">'\([a-c]*[0-9]*\)'</span>  //abc12342341
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-27"></a>expr <span class="nv">$string</span> : <span class="s1">'\([a-c]*[0-9]\)'</span>       //abc1
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-28"></a>expr <span class="nv">$string</span> : <span class="s1">'.*\([0-9][0-9][0-9]\)'</span> //341 显示括号中匹配的内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-29"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-30"></a>/// 截取不匹配的内容
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-31"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#a*3</span><span class="si">}</span>     //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-32"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#c*3</span><span class="si">}</span>     //abc12342341  这样什么也没有匹配到
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-33"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">#*c1*3</span><span class="si">}</span>   //42341  从<span class="nv">$string</span>左边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-34"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">##a*3</span><span class="si">}</span>    //41     从<span class="nv">$string</span>左边开始，去掉最长匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-35"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%3*1</span><span class="si">}</span>     //abc12342  从<span class="nv">$string</span>右边开始，去掉最短匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-36"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">string</span><span class="p">%%3*1</span><span class="si">}</span>    //abc12     从<span class="nv">$string</span>右边开始，去掉最长匹配子串
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-37"></a><span class="nv">str</span><span class="o">=</span><span class="s2">"abbc,def,ghi,abcjkl"</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-38"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#a*c</span><span class="si">}</span>     <span class="c1"># 输出,def,ghi,abcjkl  一个井号(#) 表示从左边截取掉最短的匹配 (这里把abbc字串去掉）</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-39"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##a*c</span><span class="si">}</span>    <span class="c1"># 输出jkl，             两个井号(##) 表示从左边截取掉最长的匹配 (这里把abbc,def,ghi,abc字串去掉)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-40"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#</span><span class="s2">"a*c"</span><span class="si">}</span>   <span class="c1"># 输出abbc,def,ghi,abcjkl 因为str中没有"a*c"子串</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-41"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##</span><span class="s2">"a*c"</span><span class="si">}</span>  <span class="c1"># 输出abbc,def,ghi,abcjkl 同理</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-42"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#*a*c*</span><span class="si">}</span>   <span class="c1"># 空</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-43"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">##*a*c*</span><span class="si">}</span>  <span class="c1"># 空</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-44"></a><span class="nb">echo</span> <span class="si">${</span><span class="nv">str</span><span class="p">#d*f)     # 输出abbc,def,ghi,abcjkl,</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-45"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">#*d*f</span><span class="si">}</span><span class="p">    # 输出,ghi,abcjkl</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-46"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*l</span><span class="si">}</span><span class="p">     # abbc,def,ghi  一个百分号(%)表示从右边截取最短的匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-47"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%%b*l</span><span class="si">}</span><span class="p">    # a             两个百分号表示(%%)表示从右边截取最长的匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-48"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">%a*c</span><span class="si">}</span><span class="p">     # abbc,def,ghi,abcjkl</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-49"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-50"></a><span class="p">/// 匹配并且替换</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-51"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/23/bb</span><span class="si">}</span><span class="p">   //abc1bb42341  替换一次</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-52"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">//23/bb</span><span class="si">}</span><span class="p">  //abc1bb4bb41  双斜杠替换所有匹配</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-53"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/#abc/bb</span><span class="si">}</span><span class="p"> //bb12342341   #以什么开头来匹配，根php中的^有点像</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-54"></a><span class="p">echo </span><span class="si">${</span><span class="nv">string</span><span class="p">/%41/bb</span><span class="si">}</span><span class="p">  //abc123423bb  %以什么结尾来匹配，根php中的</span>$<span class="nv">有点像</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-55"></a><span class="p">str=</span><span class="s2">"apple, tree, apple tree"</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-56"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/apple/APPLE</span><span class="si">}</span><span class="p">   # 替换第一次出现的apple</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-57"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">//apple/APPLE</span><span class="si">}</span><span class="p">  # 替换所有apple</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-58"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/#apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple开头，则用APPLE替换它</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-59"></a><span class="p">echo </span><span class="si">${</span><span class="nv">str</span><span class="p">/%apple/APPLE</span><span class="si">}</span><span class="p">  # 如果字符串str以apple结尾，则用APPLE替换它</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-60"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-61"></a><span class="p">/// 比较</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-62"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> == a* ]]        # 逻辑真 (pattern matching)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-63"></a><span class="p">[[ </span><span class="s2">"a.txt"</span><span class="p"> =~ .*</span><span class="se">\.</span><span class="nv">txt</span><span class="p"> ]]   # 逻辑真 (regex matching)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-64"></a><span class="p">[[ </span><span class="s2">"abc"</span><span class="p"> == </span><span class="s2">"abc"</span><span class="p"> ]]       # 逻辑真 (string comparision)</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-65"></a><span class="p">[[ </span><span class="s2">"11"</span><span class="p"> &lt; </span><span class="s2">"2"</span><span class="p"> ]]           # 逻辑真 (string comparision), 按ascii值比较</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-66"></a>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-67"></a><span class="p">/// 字符串删除</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-68"></a>$<span class="p"> test=</span><span class="s1">'c:/windows/boot.ini'</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-69"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-70"></a><span class="p">c:/windows/boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-71"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">#*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-72"></a><span class="p">windows/boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-73"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-74"></a><span class="p">boot.ini</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-75"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-76"></a><span class="p">c:/windows</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-77"></a>$<span class="p"> echo </span><span class="si">${</span><span class="nv">test</span><span class="p">%%/*</span><span class="si">}</span><span class="p"></span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-78"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">#substring正则表达式</span><span class="si">}</span><span class="nv">从字符串开头开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-79"></a><span class="p">#</span><span class="si">${</span><span class="nv">变量名</span><span class="p">%substring正则表达式</span><span class="si">}</span><span class="nv">从字符串结尾开始配备substring</span><span class="p">,删除匹配上的表达式。</span>
+<a name="rest_code_85c1ff9c000e4e2cad7792b15280cc4b-80"></a><span class="p">#注意：</span><span class="si">${</span><span class="nv">test</span><span class="p">##*/</span><span class="si">}</span><span class="p">,</span><span class="si">${</span><span class="nv">test</span><span class="p">%/*</span><span class="si">}</span><span class="p"> 分别是得到文件名，或者目录地址最简单方法。</span>
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>数组操作</h2>
+<p>声明一个数组:</p>
+<pre class="literal-block">
+declare -a array
+</pre>
+<p>数组赋值:</p>
+<pre class="literal-block">
+A. array=(var1 var2 var3 ... varN)
+B. array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)
+C. array[0]=var1
+   arrya[1]=var2
+   ...
+   array[n]=varN
+D. ARRAY=()
+   ARRAY+=('foo')
+   ARRAY+=('bar')
+</pre>
+<p>计算数组元素个数:</p>
+<pre class="literal-block">
+${#array[@]}  或者  ${#array[*]}
+</pre>
+<p>引用数组:</p>
+<pre class="literal-block">
+echo ${array[n]}
+</pre>
+<p>遍历数组:</p>
+<pre class="literal-block">
+filename=(`ls`)
+for var in ${filename[@]};do
+    echo $var
+done
+</pre>
+</div>
+</div>
+        </div>
+        </article><article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="system_security_thought/" class="u-url">系统安全的思考</a></h1>
             <div class="metadata">
                 <span class="byline author vcard">
                         <i class="mdi-action-face-unlock"></i>
@@ -311,9 +565,9 @@ vpn-overview.txt -&gt; vpn-manager-api.txt -&gt; vpn-connection-api.txt</p>
 <p>Connman是以daemon进程在系统后台运行的，要访问Connman提供的服务，只能通过进程间通信类似的机制。
 事实上Connman提供的服务都是以D-Bus方法即信号作为API接口的。</p>
 <p>例如，新建/删除VPN、连接VPN的接口如下：</p>
-<pre class="code c"><a name="rest_code_02386afd7b114b629a146cc9c871961d-1"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">create</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
-<a name="rest_code_02386afd7b114b629a146cc9c871961d-2"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">remove</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
-<a name="rest_code_02386afd7b114b629a146cc9c871961d-3"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">do_connect</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<pre class="code c"><a name="rest_code_3f0abb60d9264394b61c62564dfb640f-1"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">create</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_3f0abb60d9264394b61c62564dfb640f-2"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">remove</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
+<a name="rest_code_3f0abb60d9264394b61c62564dfb640f-3"></a><span class="k">static</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="nf">do_connect</span><span class="p">(</span><span class="n">DBusConnection</span> <span class="o">*</span><span class="n">conn</span><span class="p">,</span> <span class="n">DBusMessage</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
 </pre>
 <div class="section" id="qtd-bus">
 <h3>Qt对D-Bus的支持</h3>
@@ -409,36 +663,36 @@ DNS配置，路由，地址等信息，你确保不会改乱？</p>
 <p>因为考虑到JavaScript是弱类型的语言，首先就会遇到数字和字符串的转换等问题，接着还有按位操作的问题也不知道在JavaScript中如何实现。
 然后开始查询资料尝试解决这些问题。数字和字符串类型的转换是不需要的，写代码尝试了下应该JavaScript自动做了类型转换。</p>
 <p>首先想到的思路是根据最大32位整数位移获取掩码对应的整数值，然后将结果转换成点分格式的字符串。在网上找到了如下的代码。</p>
-<pre class="code javascript"><a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-1"></a><span class="kd">function</span> <span class="nx">ip2long</span><span class="p">(</span><span class="nx">ip</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-2"></a>    <span class="kd">var</span> <span class="nx">ipl</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-3"></a>    <span class="nx">ip</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">octet</span> <span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-4"></a>        <span class="nx">ipl</span><span class="o">&lt;&lt;=</span><span class="mi">8</span><span class="p">;</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-5"></a>        <span class="nx">ipl</span><span class="o">+=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">octet</span><span class="p">);</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-6"></a>    <span class="p">});</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-7"></a>    <span class="k">return</span><span class="p">(</span><span class="nx">ipl</span> <span class="o">&gt;&gt;&gt;</span><span class="mi">0</span><span class="p">);</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-8"></a><span class="p">}</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-9"></a>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-10"></a><span class="kd">function</span> <span class="nx">long2ip</span> <span class="p">(</span><span class="nx">ipl</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-11"></a>    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;&gt;</span><span class="mi">24</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-12"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">16</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-13"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">8</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-14"></a>        <span class="p">(</span><span class="nx">ipl</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
-<a name="rest_code_8bfea4a2a8c84df0a0bd46deba53810e-15"></a><span class="p">}</span>
+<pre class="code javascript"><a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-1"></a><span class="kd">function</span> <span class="nx">ip2long</span><span class="p">(</span><span class="nx">ip</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-2"></a>    <span class="kd">var</span> <span class="nx">ipl</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-3"></a>    <span class="nx">ip</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'.'</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span> <span class="nx">octet</span> <span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-4"></a>        <span class="nx">ipl</span><span class="o">&lt;&lt;=</span><span class="mi">8</span><span class="p">;</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-5"></a>        <span class="nx">ipl</span><span class="o">+=</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">octet</span><span class="p">);</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-6"></a>    <span class="p">});</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-7"></a>    <span class="k">return</span><span class="p">(</span><span class="nx">ipl</span> <span class="o">&gt;&gt;&gt;</span><span class="mi">0</span><span class="p">);</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-8"></a><span class="p">}</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-9"></a>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-10"></a><span class="kd">function</span> <span class="nx">long2ip</span> <span class="p">(</span><span class="nx">ipl</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-11"></a>    <span class="k">return</span> <span class="p">(</span> <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;&gt;</span><span class="mi">24</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-12"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">16</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-13"></a>        <span class="p">(</span><span class="nx">ipl</span><span class="o">&gt;&gt;</span><span class="mi">8</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="o">+</span><span class="s1">'.'</span> <span class="o">+</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-14"></a>        <span class="p">(</span><span class="nx">ipl</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">)</span> <span class="p">);</span>
+<a name="rest_code_07af97ec33da4e8d9ed913abe803c1a1-15"></a><span class="p">}</span>
 </pre>
 <p>有了这两个方法就可以将计算得到的掩码整数值转换成点分格式了。
 但是在做位运算的时候发现了一个坑，在一边查资料一边尝试实现的第一个版本中，掩码为0和掩码为32产生的结果一样，都是255.255.255.255。</p>
 <!-- note
 JavaScript的左移运算保留数字的符号位。例如，如果把 -2 左移 5 位，得到的是 -64，而不是 64。符号仍然存储在第32位中。 即使输出二进制字符串形式的负数，显示的也是负号形式（例如，-2 将显示 -10。） -->
 <p>看来此方案不可行，接着查资料发现了一个新的思路，根据掩码生成四个小于等于255的值，将这四个值拼成点分格式。这样实现避免了对符号位的操作，甚好。</p>
-<pre class="code javascript"><a name="rest_code_ffd11969fb984a43ab357eb7b185632e-1"></a><span class="kd">function</span> <span class="nx">createNetmaskAddr</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-2"></a>  <span class="kd">var</span> <span class="nx">mask</span><span class="o">=</span><span class="p">[];</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-3"></a>  <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-4"></a>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-5"></a>    <span class="nx">mask</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">256</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="nx">n</span><span class="p">));</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-6"></a>    <span class="nx">bitCount</span> <span class="o">-=</span> <span class="nx">n</span><span class="p">;</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-7"></a>  <span class="p">}</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-8"></a>  <span class="k">return</span> <span class="nx">mask</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
-<a name="rest_code_ffd11969fb984a43ab357eb7b185632e-9"></a><span class="p">}</span>
+<pre class="code javascript"><a name="rest_code_b4e8d8e09386451cb3817e92245236d8-1"></a><span class="kd">function</span> <span class="nx">createNetmaskAddr</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-2"></a>  <span class="kd">var</span> <span class="nx">mask</span><span class="o">=</span><span class="p">[];</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-3"></a>  <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-4"></a>    <span class="kd">var</span> <span class="nx">n</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">bitCount</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-5"></a>    <span class="nx">mask</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">256</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="o">-</span><span class="nx">n</span><span class="p">));</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-6"></a>    <span class="nx">bitCount</span> <span class="o">-=</span> <span class="nx">n</span><span class="p">;</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-7"></a>  <span class="p">}</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-8"></a>  <span class="k">return</span> <span class="nx">mask</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
+<a name="rest_code_b4e8d8e09386451cb3817e92245236d8-9"></a><span class="p">}</span>
 </pre>
 </div>
 <div class="section" id="id1">
