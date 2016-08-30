@@ -11,12 +11,13 @@ article: http://ogp.me/ns/article#
 <link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="http://qytz.github.io/">
+<link rel="next" href="index-1.html" type="text/html">
 <!--[if lt IE 9]>
             <script src="assets/js/html5shiv.min.js"></script>
             <script src="assets/js/respond.min.js"></script>
         <![endif]--><link rel="stylesheet" type="text/css" href="assets/css/tipuesearch.css">
 <link rel="stylesheet" type="text/css" href="assets/css/chinese.css">
-<link rel="prefetch" href="posts/tech/shell_tu/" type="text/html">
+<link rel="prefetch" href="posts/tech/python3_bytes_decode/" type="text/html">
 </head>
 <body>
 <a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
@@ -54,7 +55,53 @@ article: http://ogp.me/ns/article#
                 <div class="col-xs-12 col-md-11 content-material">
 
     <div class="postindex well post-material ">
-        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="posts/tech/shell_tu/" class="u-url">shell脚本常用操作入门</a></h1>
+        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="posts/tech/python3_bytes_decode/" class="u-url">Python 3 bytes 类型的decode问题</a></h1>
+            <div class="metadata">
+                <span class="byline author vcard">
+                        <i class="mdi-action-face-unlock"></i>
+                    lennyh
+                </span>
+                <span class="dateline"><a href="posts/tech/python3_bytes_decode/" rel="bookmark">
+                    <i class="mdi-device-access-time"></i><time class="published dt-published" datetime="2016-08-30T15:16:00+08:00" title="2016-08-30 15:16">2016-08-30 15:16</time></a></span>
+                    <span class="commentline">            <a href="posts/tech/python3_bytes_decode/#disqus_thread" data-disqus-identifier="cache/posts/tech/python-bytes-decode.html">Comments</a>
+
+</span>
+            </div>
+            <hr></header><div class="e-content entry-content">
+        <div>
+<div class="section" id="python-3-bytes-decode">
+<h2>Python 3 Bytes.decode遇到的问题</h2>
+<p>使用 <em>Python 3</em> 的 <cite>Subprocess</cite> 模块执行shell命令，读取到的结果的类型是 <cite>bytes</cite> ，如果是文本需要转成 <cite>str</cite> 类型。</p>
+<p>一般来说，Linux的中文环境大都使用 <em>utf-8</em> 编码，我执行操作的系统也确实使用的 <em>utf-8</em> 编码，然后还是遇到了问题……</p>
+<p>即使是使用了 <em>utf-8</em> 编码，我们的文件名仍然可能会产生乱码，比如我们执行 <cite>ls</cite> 可能会看到这样的文件名:</p>
+<pre class="literal-block">
+OITS??ѵ--????.mp4
+</pre>
+<p>而如果使用 <cite>Subprocess</cite> 模块执行 <cite>ls</cite> 命令，则 <cite>result.decode("utf-8")</cite> 会报 <em>UnicodeDecodeError</em> 异常，
+初见这个问题我非常惊讶，应该 <em>utf-8</em> 可以编码所有的字符了吧，为啥我用 <em>utf-8</em> decode 还会出现这样的问题。</p>
+<p>我觉得出现这个问题的原因很可能是，<em>Linux</em> 文件系统使用的 <em>utf-8</em> 编码保存文件名，但是 <strong>该文件是从Windows的文件系统拷贝过来</strong> ，
+而 <strong>Windows 文件系统的默认编码则是不是 utf-8</strong> ，这样我们在 <em>shell</em> 执行 <cite>ls</cite> 命令时显示的就是乱码字符了，
+因为我们的文件系统是存的 <em>utf-8</em> 编码的文件名，自然该文件名也是按照 <em>utf-8</em> 来解码输出。</p>
+<p>要解决这个问题也不是很麻烦，参考资料1 的答案很清楚，要么使用兼容的 <em>cp437/latin-1</em> 解码，要么使用 <em>utf-8</em> 解码时进行容错处理。</p>
+<pre class="code python"><a name="rest_code_5505116e906d48e1a300d5df92a086cf-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">b</span><span class="s1">'</span><span class="se">\xc5\xe0\xd1\xb5</span><span class="s1">--</span><span class="se">\xd1\xee\xc0\xa5</span><span class="s1">.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"surrogateescape"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-3"></a><span class="s1">'</span><span class="se">\udcc5\udce0</span><span class="s1">ѵ--</span><span class="se">\udcd1\udcee\udcc0\udca5</span><span class="s1">.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"cp437"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-5"></a><span class="s1">'┼α╤╡--╤ε└Ñ.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"latin-1"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-7"></a><span class="s1">'ÅàÑµ--ÑîÀ¥.mp4'</span>
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>参考资料</h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://stackoverflow.com/a/27527728/6773188">Convert bytes to a Python string</a></li>
+<li><a class="reference external" href="https://www.python.org/dev/peps/pep-0383/">PEP 383 -- Non-decodable Bytes in System Character Interfaces</a></li>
+</ol>
+</div>
+</div>
+        </div>
+        </article><article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="posts/tech/shell_tu/" class="u-url">shell脚本常用操作入门</a></h1>
             <div class="metadata">
                 <span class="byline author vcard">
                         <i class="mdi-action-face-unlock"></i>
@@ -842,31 +889,13 @@ JavaScript的左移运算保留数字的符号位。例如，如果把 -2 左移
 </div>
 </div>
         </div>
-        </article><article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="posts/helloworld/" class="u-url">Hello Pelican &amp; GitHub Pages</a></h1>
-            <div class="metadata">
-                <span class="byline author vcard">
-                        <i class="mdi-action-face-unlock"></i>
-                    lennyh
-                </span>
-                <span class="dateline"><a href="posts/helloworld/" rel="bookmark">
-                    <i class="mdi-device-access-time"></i><time class="published dt-published" datetime="2014-11-30T22:58:26+08:00" title="2014-11-30 22:58">2014-11-30 22:58</time></a></span>
-                    <span class="commentline">            <a href="posts/helloworld/#disqus_thread" data-disqus-identifier="cache/posts/hello.html">Comments</a>
-
-</span>
-            </div>
-            <hr></header><div class="e-content entry-content">
-        <div>
-<p>不知不觉做技术也已经四年有余了，四年来不管在技术、工作及生活中都积累了一些不错的经验教训（以及很多好玩的东西）。</p>
-<p>但是碍于个人的懒惰，虽偶有尝试，却从未能够坚持一直把学到的东西记录下来供以后。</p>
-<p>于是，很多好东西消逝在时光中，余实在不忍继续这样下去。</p>
-<p>于是，下定决心，在此搭建此平台，希望自己能够坚持不懈，把那些值得记录的东西记录下来。</p>
-<p>愿有机会满怀高兴的回翻这些有趣的东西，愿有趣的东西越来越多。</p>
-</div>
-        </div>
         </article>
 </div>
-
-               <script>var disqus_shortname="v2h";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+        <nav class="postindexpager"><ul class="pager">
+<li class="next">
+                <a href="index-1.html" rel="next">旧一篇</a>
+            </li>
+        </ul></nav><script>var disqus_shortname="v2h";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
 </div>
             </div>
         </div>

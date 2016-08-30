@@ -18,8 +18,12 @@
   <lastmod>2016-08-23T07:32:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://qytz.github.io/categories/cat_python.xml</loc>
+  <lastmod>2016-08-30T07:46:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://qytz.github.io/categories/cat_shell.xml</loc>
-  <lastmod>2016-08-23T07:32:00Z</lastmod>
+  <lastmod>2016-08-23T07:35:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/cat_tech.xml</loc>
@@ -38,16 +42,20 @@
   <lastmod>2016-08-23T07:32:00Z</lastmod>
  </sitemap>
  <sitemap>
+  <loc>http://qytz.github.io/categories/python.xml</loc>
+  <lastmod>2016-08-30T07:46:00Z</lastmod>
+ </sitemap>
+ <sitemap>
   <loc>http://qytz.github.io/categories/security.xml</loc>
   <lastmod>2016-08-23T07:32:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/shell.xml</loc>
-  <lastmod>2016-08-23T07:32:00Z</lastmod>
+  <lastmod>2016-08-23T07:35:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/tech.xml</loc>
-  <lastmod>2016-08-23T07:32:00Z</lastmod>
+  <lastmod>2016-08-30T07:46:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/categories/tech_misc.xml</loc>
@@ -59,10 +67,10 @@
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/rss.xml</loc>
-  <lastmod>2016-08-23T07:32:00Z</lastmod>
+  <lastmod>2016-08-30T07:46:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>http://qytz.github.io/sitemap.xml</loc>
-  <lastmod>2016-08-23T07:32:00Z</lastmod>
+  <lastmod>2016-08-30T07:46:00Z</lastmod>
  </sitemap>
 </sitemapindex>

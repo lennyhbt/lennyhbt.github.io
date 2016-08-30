@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns#
+article: http://ogp.me/ns/article#
+" lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python 3 bytes 类型的decode问题 | v2h</title>
+<link href="../../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.xml">
+<link rel="canonical" href="http://qytz.github.io/posts/tech/python3_bytes_decode/">
+<!--[if lt IE 9]>
+            <script src="../../../assets/js/html5shiv.min.js"></script>
+            <script src="../../../assets/js/respond.min.js"></script>
+        <![endif]--><link rel="stylesheet" type="text/css" href="../../../assets/css/tipuesearch.css">
+<link rel="stylesheet" type="text/css" href="../../../assets/css/chinese.css">
+<meta name="author" content="lennyh">
+<link rel="prev" href="../shell_tu/" title="shell脚本常用操作入门" type="text/html">
+<meta property="og:site_name" content="v2h">
+<meta property="og:title" content="Python 3 bytes 类型的decode问题">
+<meta property="og:url" content="http://qytz.github.io/posts/tech/python3_bytes_decode/">
+<meta property="og:description" content="Python 3 Bytes.decode遇到的问题
+使用 Python 3 的 Subprocess 模块执行shell命令，读取到的结果的类型是 bytes ，如果是文本需要转成 str 类型。
+一般来说，Linux的中文环境大都使用 utf-8 编码，我执行操作的系统也确实使用的 utf-8 编码，然后还是遇到了问题……
+即使是使用了 utf-8 编码，我们的文件名仍然可能会产生乱码，比如我">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2016-08-30T15:16:00+08:00">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="tech">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">跳到主内容</a>
+
+<!-- Menubar -->
+
+<nav class="navbar  header-panel shadow-z-3" role="navigation"><div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-3">
+                    
+<span class="navbar-form pull-left">
+<input type="text" class="form-control" placeholder="Search" id="tipue_search_input"></span>
+            <h1 class="title-blog">
+                <a href="http://qytz.github.io/">
+                        <span id="blog-title">v2h</span>
+                    </a>
+            </h1>
+          </div>
+        </div>
+      </div>
+<!-- /.container-fluid -->
+</nav><div class="container-fluid main" id="content" role="main">
+        <div class="row">
+            <nav class="col-xs-3 menu"><ul>
+<li class="withripple"><a href="../../../archive.html">文章存档</a></li>
+                <li class="withripple"><a href="../../../categories/">标签</a></li>
+                <li class="withripple"><a href="../../../rss.xml">RSS feed</a></li>
+                <li class="withripple"><a href="../../../stories/aboutme/">关于</a></li>
+                <li class="withripple"><a href="../../../stories/h-project/">H Project</a></li>
+                <li class="withripple"><a href="../../../stories/readinglist/">阅读列表</a></li>
+
+                    
+                </ul>
+<ul class="nav navbar-nav"></ul></nav><div class="posts-material col-xs-9">
+                <div class="col-xs-12 col-md-11 content-material">
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Python 3 bytes 类型的decode问题</a></h1>
+<hr>
+<div class="metadata">
+            <span class="byline author vcard">
+                <a href=".">
+                        <i class="mdi-action-face-unlock"></i>
+                    lennyh
+                </a>
+            </span>
+            <span class="dateline">
+                <a href="." rel="bookmark"><i class="mdi-device-access-time"></i>
+                    <time class="published dt-published" datetime="2016-08-30T15:16:00+08:00" itemprop="datePublished" title="2016-08-30 15:16">2016-08-30 15:16</time></a>
+            </span>
+                <span class="commentline">            <a href="#disqus_thread" data-disqus-identifier="cache/posts/tech/python-bytes-decode.html">Comments</a>
+
+</span>
+        </div>
+        
+        <hr></header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="section" id="python-3-bytes-decode">
+<h2>Python 3 Bytes.decode遇到的问题</h2>
+<p>使用 <em>Python 3</em> 的 <cite>Subprocess</cite> 模块执行shell命令，读取到的结果的类型是 <cite>bytes</cite> ，如果是文本需要转成 <cite>str</cite> 类型。</p>
+<p>一般来说，Linux的中文环境大都使用 <em>utf-8</em> 编码，我执行操作的系统也确实使用的 <em>utf-8</em> 编码，然后还是遇到了问题……</p>
+<p>即使是使用了 <em>utf-8</em> 编码，我们的文件名仍然可能会产生乱码，比如我们执行 <cite>ls</cite> 可能会看到这样的文件名:</p>
+<pre class="literal-block">
+OITS??ѵ--????.mp4
+</pre>
+<p>而如果使用 <cite>Subprocess</cite> 模块执行 <cite>ls</cite> 命令，则 <cite>result.decode("utf-8")</cite> 会报 <em>UnicodeDecodeError</em> 异常，
+初见这个问题我非常惊讶，应该 <em>utf-8</em> 可以编码所有的字符了吧，为啥我用 <em>utf-8</em> decode 还会出现这样的问题。</p>
+<p>我觉得出现这个问题的原因很可能是，<em>Linux</em> 文件系统使用的 <em>utf-8</em> 编码保存文件名，但是 <strong>该文件是从Windows的文件系统拷贝过来</strong> ，
+而 <strong>Windows 文件系统的默认编码则是不是 utf-8</strong> ，这样我们在 <em>shell</em> 执行 <cite>ls</cite> 命令时显示的就是乱码字符了，
+因为我们的文件系统是存的 <em>utf-8</em> 编码的文件名，自然该文件名也是按照 <em>utf-8</em> 来解码输出。</p>
+<p>要解决这个问题也不是很麻烦，参考资料1 的答案很清楚，要么使用兼容的 <em>cp437/latin-1</em> 解码，要么使用 <em>utf-8</em> 解码时进行容错处理。</p>
+<pre class="code python"><a name="rest_code_5505116e906d48e1a300d5df92a086cf-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">b</span><span class="s1">'</span><span class="se">\xc5\xe0\xd1\xb5</span><span class="s1">--</span><span class="se">\xd1\xee\xc0\xa5</span><span class="s1">.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">"surrogateescape"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-3"></a><span class="s1">'</span><span class="se">\udcc5\udce0</span><span class="s1">ѵ--</span><span class="se">\udcd1\udcee\udcc0\udca5</span><span class="s1">.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-4"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"cp437"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-5"></a><span class="s1">'┼α╤╡--╤ε└Ñ.mp4'</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-6"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"latin-1"</span><span class="p">)</span>
+<a name="rest_code_5505116e906d48e1a300d5df92a086cf-7"></a><span class="s1">'ÅàÑµ--ÑîÀ¥.mp4'</span>
+</pre>
+</div>
+<div class="section" id="id1">
+<h2>参考资料</h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://stackoverflow.com/a/27527728/6773188">Convert bytes to a Python string</a></li>
+<li><a class="reference external" href="https://www.python.org/dev/peps/pep-0383/">PEP 383 -- Non-decodable Bytes in System Character Interfaces</a></li>
+</ol>
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><div itemprop="keywords" class="tags">
+            <a class="tag p-category btn btn-success btn-raised btn-sm" href="../../../categories/python/" rel="tag">python</a>
+            <a class="tag p-category btn btn-success btn-raised btn-sm" href="../../../categories/tech/" rel="tag">tech</a>
+        </div>
+
+            <ul class="pager">
+<li class="previous">
+                <a href="../shell_tu/" rel="prev" title="shell脚本常用操作入门">前一篇</a>
+            </li>
+        </ul></nav></aside><section class="comments"><h2>
+<i class="mdi-communication-forum"></i>注释</h2>
+        <hr>
+<div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="v2h",
+            disqus_url="http://qytz.github.io/posts/tech/python3_bytes_decode/",
+        disqus_title="Python 3 bytes \u7c7b\u578b\u7684decode\u95ee\u9898",
+        disqus_identifier="cache/posts/tech/python-bytes-decode.html",
+        disqus_config = function () {
+            this.language = "zh_cn";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section></article><script>var disqus_shortname="v2h";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+</div>
+            </div>
+        </div>
+        <button class="btn btn-fab btn-raised btn-material-green btn-footer" data-toggle="modal" data-target="#footer-dialog">
+            <i class="mdi-communication-message"></i>
+        </button>
+        <div id="footer-dialog" class="modal fade" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">v2h credits</h4>
+ 
+              </div>
+              <div class="modal-body">
+                    Contents © 2016         <a href="mailto:hhhhhf@foxmail.com">lennyh</a> | <a href="https://github.com/qytz">lennyh</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a>
+<br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.
+
+                    
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="source-button">
+    <a class="btn btn-fab btn-raised btn-material-indigo" target="_blank" href="index.rst" title="源代码">
+        <i class="mdi-file-cloud-download"></i>
+    </a>
+
+        </div>
+</div>
+
+            <script src="../../../assets/js/all-nocdn.js"></script><script src="../../../assets/js/colorbox-i18n/jquery.colorbox-zh-CN.js"></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["weixin","tsina","sqq","qzone","douban","tieba","hx","youdao","fbook","twi","linkedin","mail","copy","print"],"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"100"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script><script>
+
+            $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+            });
+
+            $(window).on("resize", function() {
+                $("html, body").height($(window).height());
+                $(".main, .menu").height($(window).height() - $(".header-panel").outerHeight() - 76 ); // footer margin: $("footer.footer").outerHeight()
+                $(".posts-material").height($(window).height());
+            }).trigger("resize");
+        </script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("zh-cn");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><!-- Modal --><div id="search-results" class="modal fade" role="dialog" style="height: 80%;">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h4 class="modal-title">Search Results:</h4>
+      </div>
+      <div class="modal-body" id="tipue_search_content" style="max-height: 600px; overflow-y: auto;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+    $.when(
+        $.getScript( "/assets/js/tipuesearch_set.js" ),
+        $.getScript( "/assets/js/tipuesearch.js" ),
+        $.Deferred(function( deferred ){
+            $( deferred.resolve );
+        })
+    ).done(function() {
+        $('#tipue_search_input').tipuesearch({
+            'mode': 'json',
+            'contentLocation': '/assets/js/tipuesearch_content.json'
+        });
+        $('#tipue_search_input').keyup(function (e) {
+            if (e.keyCode == 13) {
+                $('#search-results').modal()
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>
