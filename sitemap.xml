@@ -23,7 +23,7 @@
  </url>
  <url>
   <loc>http://qytz.github.io/archive.html</loc>
-  <lastmod>2016-08-30T07:46:00Z</lastmod>
+  <lastmod>2016-09-13T08:44:00Z</lastmod>
  </url>
  <url>
   <loc>http://qytz.github.io/categories/</loc>
@@ -91,7 +91,7 @@
  </url>
  <url>
   <loc>http://qytz.github.io/index-1.html</loc>
-  <lastmod>2016-08-30T07:46:00Z</lastmod>
+  <lastmod>2016-09-13T08:42:00Z</lastmod>
  </url>
  <url>
   <loc>http://qytz.github.io/posts/</loc>
@@ -115,7 +115,7 @@
  </url>
  <url>
   <loc>http://qytz.github.io/posts/tech/</loc>
-  <lastmod>2016-08-30T07:46:00Z</lastmod>
+  <lastmod>2016-09-13T08:42:00Z</lastmod>
  </url>
  <url>
   <loc>http://qytz.github.io/posts/tech/js_bit_operation/</loc>
@@ -132,6 +132,10 @@
  <url>
   <loc>http://qytz.github.io/posts/tech/shell_tu/</loc>
   <lastmod>2016-08-23T07:32:00Z</lastmod>
+ </url>
+ <url>
+  <loc>http://qytz.github.io/posts/tech/sphinx-generate-i11n-doc/</loc>
+  <lastmod>2016-09-13T08:42:00Z</lastmod>
  </url>
  <url>
   <loc>http://qytz.github.io/posts/tech/system_security_thought/</loc>

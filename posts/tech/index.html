@@ -53,7 +53,113 @@ article: http://ogp.me/ns/article#
                 <div class="col-xs-12 col-md-11 content-material">
 
     <div class="postindex well post-material ">
-        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="python3_bytes_decode/" class="u-url">Python 3 bytes 类型的decode问题</a></h1>
+        <article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="sphinx-generate-i11n-doc/" class="u-url">sphinx生成本地化的文档</a></h1>
+            <div class="metadata">
+                <span class="byline author vcard">
+                        <i class="mdi-action-face-unlock"></i>
+                    lennyh
+                </span>
+                <span class="dateline"><a href="sphinx-generate-i11n-doc/" rel="bookmark">
+                    <i class="mdi-device-access-time"></i><time class="published dt-published" datetime="2016-09-13T16:44:00+08:00" title="2016-09-13 16:44">2016-09-13 16:44</time></a></span>
+                    <span class="commentline">            <a href="sphinx-generate-i11n-doc/#disqus_thread" data-disqus-identifier="cache/posts/tech/sphinx-i11n.html">Comments</a>
+
+</span>
+            </div>
+            <hr></header><div class="e-content entry-content">
+        <div>
+<div class="section" id="id1">
+<h2>快速指南</h2>
+<ol class="arabic">
+<li>
+<p class="first">使用 <cite>pip install sphinx-intl</cite> 或 <cite>easy_install sphinx-intl</cite> 安装 sphinx-intl。</p>
+</li>
+<li>
+<p class="first">添加如下配置到你的 Sphinx 文档配置文件 conf.py:</p>
+<pre class="literal-block">
+locale_dirs = ['locale/']   # path is example but recommended.gett
+ext_compact = False     # optional.
+</pre>
+</li>
+<li>
+<p class="first">根据原文档生成可供翻译的 pot 文件:</p>
+<pre class="literal-block">
+$ make gettext
+</pre>
+<p>执行此命令会在 <em>_build/locale</em> 目录生成很多 pot 文件。</p>
+</li>
+<li>
+<p class="first">生成/更新 locale_dir</p>
+<pre class="literal-block">
+$ sphinx-intl update -p _build/locale -l zh_CN -l ja
+</pre>
+<p>执行此命令会在 <em>locale_dir</em> 生成如下包含 po 文件的目录</p>
+<ul class="simple">
+<li>./locale/zh_CN/LC_MESSAGES/</li>
+<li>./locale/ja/LC_MESSAGES/</li>
+</ul>
+<p>支持的语言代码参考 <a class="reference external" href="http://www.sphinx-doc.org/en/stable/config.html#confval-language">http://www.sphinx-doc.org/en/stable/config.html#confval-language</a></p>
+<ul class="simple">
+<li>bn – Bengali</li>
+<li>ca – Catalan</li>
+<li>cs – Czech</li>
+<li>da – Danish</li>
+<li>de – German</li>
+<li>en – English</li>
+<li>es – Spanish</li>
+<li>et – Estonian</li>
+<li>eu – Basque</li>
+<li>fa – Iranian</li>
+<li>fi – Finnish</li>
+<li>fr – French</li>
+<li>he – Hebrew</li>
+<li>hr – Croatian</li>
+<li>hu – Hungarian</li>
+<li>id – Indonesian</li>
+<li>it – Italian</li>
+<li>ja – Japanese</li>
+<li>ko – Korean</li>
+<li>lt – Lithuanian</li>
+<li>lv – Latvian</li>
+<li>mk – Macedonian</li>
+<li>nb_NO – Norwegian Bokmal</li>
+<li>ne – Nepali</li>
+<li>nl – Dutch</li>
+<li>pl – Polish</li>
+<li>pt_BR – Brazilian Portuguese</li>
+<li>pt_PT – European Portuguese</li>
+<li>ru – Russian</li>
+<li>si – Sinhala</li>
+<li>sk – Slovak</li>
+<li>sl – Slovenian</li>
+<li>sv – Swedish</li>
+<li>tr – Turkish</li>
+<li>uk_UA – Ukrainian</li>
+<li>vi – Vietnamese</li>
+<li>zh_CN – Simplified Chinese</li>
+<li>zh_TW – Traditional Chinese</li>
+</ul>
+</li>
+<li>
+<p class="first">翻译 <em>./locale/&lt;lang&gt;/LC_MESSAGES/</em> 目录下的 po 文件</p>
+</li>
+<li>
+<p class="first">生成本地化的文档，你需要修改 conf.py 文档的 <em>language</em> 选项，或者在命令指定此选项:</p>
+<pre class="literal-block">
+$ make -e SPHINXOPTS="-D language='de'" html
+</pre>
+</li>
+</ol>
+<p>如此，本地化的文档就在 <em>_build/html</em> 生成了。</p>
+</div>
+<div class="section" id="id2">
+<h2>参考资料</h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://www.sphinx-doc.org/en/stable/intl.html">Sphinx Internationalization</a></li>
+</ol>
+</div>
+</div>
+        </div>
+        </article><article class="h-entry post-text"><header><h1 class="p-name entry-title header"><a href="python3_bytes_decode/" class="u-url">Python 3 bytes 类型的decode问题</a></h1>
             <div class="metadata">
                 <span class="byline author vcard">
                         <i class="mdi-action-face-unlock"></i>
